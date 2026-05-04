@@ -1,0 +1,124 @@
+.filter-content {
+    display: flex;
+    max-width: 1900px;
+    margin: 20px auto;
+    gap: 20px;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 260px;
+    background: #fff;
+    padding: 15px;
+    border-radius: 6px;
+    height: 100%;
+    position: sticky;
+    top: 20px;
+    align-self: flex-start;
+}
+
+.sidebar h3 {
+    margin-top: 0;
+    color: #c00;
+}
+
+.filter-group {
+    margin-bottom: 20px;
+    border-top: 1px solid #eee;
+    padding-top: 12px;
+    margin-left: -15px;
+    margin-right: -15px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.filter-group label {
+    display: block;
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.filter-group strong {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 8px;
+    color: #333;
+    letter-spacing: 0.3px;
+}
+
+.filter-group label {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin: 6px 0;
+    font-size: 13.5px;
+    color: #444;
+    cursor: pointer;
+    line-height: 1.4;
+}
+
+.filter-group label input[type="checkbox"],
+.filter-group label input[type="radio"] {
+    margin-top: 2px;
+    accent-color: #c00;
+    flex-shrink: 0;
+}
+
+.price-input-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+}
+
+.price-input {
+    width: 80px;
+    padding: 4px 6px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 13px;
+    text-align: center;
+}
+
+.price-input:focus {
+    outline: none;
+    border-color: #c00;
+}
+
+.price-slider {
+    width: 100%;
+    margin-top: 10px;
+    accent-color: #c00;
+    cursor: pointer;
+}
+
+/* Product area */
+.content {
+    flex: 1;
+    background: white;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+.top-bar {
+    font-size: 14px;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    border-top: 1px solid #eeeeee;
+    flex: 1;
+}
+
+/* .discount {
+    background: red;
+    color: #fff;
+    font-size: 12px;
+    padding: 2px 5px;
+    border-radius: 4px;
+    margin-left: 5px;
+} */
+

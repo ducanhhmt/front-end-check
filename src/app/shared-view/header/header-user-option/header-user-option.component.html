@@ -1,0 +1,63 @@
+<div class="user-wrapper" style="position: relative;">
+    <div class="action-item">
+        <i class="fa fa-user"></i>
+        <span *ngIf="!userNameLogin; else userNameLogedIn">Tài khoản</span>
+        <ng-template #userNameLogedIn>
+            <span>{{userNameLogin}}</span>
+        </ng-template>
+        <div class="user-menu" [ngClass]="{ 'user-isLogin': userNameLogin !== null }">
+            <div class="user-menu-item">
+                <!-- Nếu chưa login -->
+                <ng-container *ngIf="!userNameLogin; else loggedIn">
+                    <a routerLink="/login" class="btn-login">Đăng nhập</a>
+                    <div class="mt-2"></div>
+                    <a routerLink="/register" class="btn-register">Đăng kí</a>
+                </ng-container>
+
+                <!-- Nếu đã login -->
+                <ng-template #loggedIn>
+                    <div class="user-profile">
+                        <a [routerLink]="['/users']" class="profile" style="text-decoration: none;color: #555;">
+                            <div class="avatar">
+                                <i class="fa fa-crown"></i>
+                            </div>
+                            <div class="profile-info">
+                                <h4>{{userNameLogin}}</h4>
+                                <span>Thành viên Fahasa</span>
+                            </div>
+                            <div class="arrow">
+                                <i class="fa fa-chevron-right"></i>
+                            </div>
+                        </a>
+                    </div>
+                    <ul class="menu">
+                        <li>
+                            <a [routerLink]="['/order']" style="text-decoration: none;color: #888;">
+                                <i class="fa fa-file-alt"></i>
+                                <span>Đơn hàng của tôi</span>
+                            </a>
+                        </li>
+                        <li>
+                            <i class="fa fa-heart"></i>
+                            <span>Sản phẩm yêu thích</span>
+                        </li>
+                        <li>
+                            <i class="fa fa-ticket"></i>
+                            <span>Wallet Voucher</span>
+                        </li>
+                        <li>
+                            <i class="fa fa-facebook"></i>
+                            <span>Tài khoản F-point</span>
+                        </li>
+                        <li class="logout">
+                            <a routerLink="/login" (click)="Logout()" style="text-decoration: none;color: #888;">
+                                <i class="fa fa-sign-out-alt"></i>
+                                <span>Thoát tài khoản</span>
+                            </a>
+                        </li>
+                    </ul>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</div>

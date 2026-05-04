@@ -1,0 +1,197 @@
+<div class="container">
+    <div class="order-page">
+        <!-- HEADER -->
+        <div class="shipping-info p-3">
+            <nz-card [nzBordered]="false" >
+                <div class="order-header pb-2">
+                    <div class="order-id-wrap">
+                        <span class="order-title">Mã đơn hàng #{{ order.code }}</span>
+                        <!-- Tag theo state -->
+                        <ng-container [ngSwitch]="order.state">
+                            <nz-tag *ngSwitchCase="0" nzColor="processing">Đang xử lý</nz-tag>
+                            <nz-tag *ngSwitchCase="1" nzColor="processing">Đang vận chuyển</nz-tag>
+                            <nz-tag *ngSwitchCase="2" nzColor="success">Hoàn tất</nz-tag>
+                            <nz-tag *ngSwitchCase="3" nzColor="error">Đã hủy</nz-tag>
+                        </ng-container>
+                    </div>
+                    <span class="order-date">
+                        Ngày mua: {{ order.createdAt }}
+                    </span>
+                </div>
+            </nz-card>
+            <!-- Stepper — ẩn khi state = 3 (hủy đơn) -->
+            <nz-steps  [nzCurrent]="order.currentStep" 
+                       [nzStatus]="order.state === 3 ? 'error' : 'process'"
+                       [ngStyle]="{ background: headerBgColor }"               
+             style="margin-top: 16px" class="p-3 ps-5 pe-5 rounded-4 pb-3" nzSize="small">
+                <nz-step *ngFor="let step of order.steps" [nzTitle]="step.label" [nzDescription]="step.time"
+                    [nzIcon]="step.icon" class="pt-2">
+                </nz-step>
+            </nz-steps>
+
+           
+            <!-- THÔNG TIN + THANH TOÁN + TỔNG TIỀN -->
+            <div nz-row [nzGutter]="16" class="info-wrapper">
+                <div nz-col [nzSpan]="9">
+                    <nz-card class="info-box" [nzBordered]="false">
+                        <h4 class="info-title">Thông tin người nhận</h4>
+                        <p>{{ order.recipient.name }}</p>
+                        <p>Tel: {{ order.recipient.phone }}</p>
+                        <p>
+                            <span nz-icon nzType="environment"></span>
+                            {{ order.recipient.address }}
+                        </p>
+                    </nz-card>
+                </div>
+
+                <div nz-col [nzSpan]="6">
+                    <nz-card class="info-box" [nzBordered]="false">
+                        <h4 class="info-title">Phương thức thanh toán</h4>
+                        <p>{{ order.paymentMethod }}</p>
+                    </nz-card>
+                </div>
+
+                <div nz-col [nzSpan]="9">
+                    <nz-card class="info-box" [nzBordered]="false">
+                        <h4 class="info-title">Tổng tiền</h4>
+
+                        <div class="price-row">
+                            <span>Tạm tính:</span>
+                            <span>{{ order.subTotal | number }} đ</span>
+                        </div>
+
+                        <div class="price-row">
+                            <span>Phí vận chuyển:</span>
+                            <span>{{ order.shippingFee | number }} đ</span>
+                        </div>
+
+                        <div class="price-row">
+                            <span>Giảm giá:</span>
+                            <span class="discount-price">-{{ order.discount | number }} đ</span>
+                        </div>
+
+                        <nz-divider></nz-divider>
+
+                        <div class="price-row total">
+                            <span>Tổng số tiền:</span>
+                            <span>{{ order.total | number }} đ</span>
+                        </div>
+                    </nz-card>
+                </div>
+
+            </div>
+
+            <!-- ACTION -->
+            <div class="action-wrapper">
+                <button class="cancel-bill" (click)="cancelOrder()">Hủy đơn</button>
+                <button class="reorder-bill" (click)="reorder()">Mua lại</button>
+            </div>
+        </div>
+
+        <!-- VẬN CHUYỂN + GHI CHÚ -->
+        <!-- <div nz-row [nzGutter]="16">
+            <div nz-col [nzSpan]="12">
+                <nz-card [nzBordered]="true" class="order-card">
+                    <h4 class="info-title">Phương thức vận chuyển</h4>
+                    <p>{{ order.shippingMethod }}</p>
+                </nz-card>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-card [nzBordered]="true" class="order-card">
+                    <h4 class="info-title">Ghi chú</h4>
+                    <p style="color: #999">{{ order.note || '(Không có)' }}</p>
+                </nz-card>
+            </div>
+        </div> -->
+
+        <!-- CẢNH BÁO -->
+        <nz-alert nzType="warning"
+            nzMessage="Để tránh lừa đảo: không chuyển tiền khi chưa nhận hàng hay bấm link lạ từ shipper." nzShowIcon>
+        </nz-alert>
+
+        <!-- <nz-alert nzType="info"
+            [nzMessage]="'Đơn hàng của quý khách được chia làm ' + order.packages.length + ' kiện hàng. Do hàng được vận chuyển từ nhiều nơi.'"
+            nzShowIcon>
+        </nz-alert> -->
+
+        <!-- KIỆN HÀNG -->
+        <nz-card *ngFor="let pkg of order.packages; let i = index" [nzBordered]="false" class="order-card rounded-3">
+            <!-- Header kiện hàng -->
+            <div class="pkg-header pb-2">
+                <div>
+                    <span class="pkg-label">Kiện hàng #{{ i + 1 }}</span>
+                    <span class="pkg-code">Mã đơn hàng #{{ pkg.code }}</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px">
+                    <!-- <a class="link-blue">Tra cứu vận chuyển</a> -->
+                    <!-- <nz-divider nzType="vertical"></nz-divider> -->
+                    <nz-tag nzColor="processing">{{ pkg.status }}</nz-tag>
+                </div>
+            </div>
+
+            <!-- Stepper kiện hàng -->
+            <!-- <nz-steps [nzCurrent]="pkg.currentStep" nzSize="small" style="margin: 16px 0">
+                <nz-step *ngFor="let s of pkg.steps" [nzTitle]="s.label" [nzDescription]="s.time"
+                    [nzIcon]="s.icon"></nz-step>
+            </nz-steps> -->
+
+            <!-- Tracking -->
+            <!-- <div class="tracking-row">
+                <span class="dot-blue"></span>
+                <div>
+                    <div class="tracking-title">Thông tin vận chuyển</div>
+                    <div class="tracking-event">{{ pkg.trackingEvent }}</div>
+                    <div class="tracking-time">{{ pkg.trackingTime }}</div>
+                </div>
+            </div> -->
+
+            <!-- Alert sản phẩm sắp phát hành -->
+            <!-- <nz-alert *ngIf="pkg.hasPreorder" nzType="warning"
+                [nzMessage]="'Đơn hàng có sản phẩm sắp phát hành. Ngày NXB dự kiến phát hành ' + pkg.preorderDate"
+                nzShowIcon style="margin: 12px 0">
+            </nz-alert> -->
+
+            <!-- Bảng sản phẩm -->
+            <div class="product-on-bill rounded-4">
+                <nz-table [nzData]="pkg.items" [nzShowPagination]="false" [nzBordered]="false" nzSize="small">
+                <thead>
+                    <tr>
+                        <th>Sản phẩm ({{ pkg.items.length }})</th>
+                        <th nzAlign="right">Giá</th>
+                        <th nzAlign="right">Số lượng</th>
+                        <th nzAlign="right">Thành tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of pkg.items">
+                        <td>
+                            <div style="display: flex; gap: 10px; align-items: flex-start">
+                                <img [src]="item.image" class="product-thumb" alt="">
+                                <div>
+                                    <div class="product-name">{{ item.name }}</div>
+                                    <div class="product-sku">Sku: {{ item.sku }}</div>
+                                    <div class="product-note" *ngIf="item.note">{{ item.note }}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td nzAlign="right">
+                            <div class="price-current">{{ item.price | number }} đ</div>
+                            <div class="price-old">{{ item.originalPrice | number }} đ</div>
+                        </td>
+                        <td nzAlign="right">{{ item.quantity }}</td>
+                        <td nzAlign="right"><strong>{{ item.price * item.quantity | number }} đ</strong></td>
+                    </tr>
+                </tbody>
+            </nz-table>
+            </div>
+            
+
+            <!-- Tổng kiện hàng -->
+            <div class="pkg-total-row">
+                <span class="pkg-total-label">Tổng tiền:</span>
+                <span class="pkg-total-val">{{ pkg.total | number }} đ</span>
+                <!-- <button nz-button nzType="link" nzDanger nz-icon nzType="down"></button> -->
+            </div>
+        </nz-card>
+    </div>
+</div>

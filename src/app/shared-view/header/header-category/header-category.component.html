@@ -1,0 +1,29 @@
+<div class="menu-wrapper">
+    <!-- Category icon -->
+    <div class="menu-icon"></div>
+    <!-- Category MENU -->
+    <div class="mega-menu">
+        <div class="menu-left">
+            <h3>Danh mục sản phẩm</h3>
+            <ul>
+                <li *ngFor="let item of categories" (mouseenter)="selectedCategory = item"
+                    [class.active]="item === selectedCategory">
+                    {{item.name}}
+                </li>
+            </ul>
+        </div>
+        <div class="menu-right" *ngIf="selectedCategory">
+            <div class="row">
+                <h3>{{selectedCategory.name}}</h3>
+                <div class="col-md-3 menu-group pt-3" *ngFor="let group of selectedCategory.groups">
+                    <div class="group-title">{{group.title}}</div>
+                    <div class="pt-2" *ngFor="let sub of group.items">
+                        <a href="none" class="group-items-title text-decoration-none">
+                            {{sub}}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

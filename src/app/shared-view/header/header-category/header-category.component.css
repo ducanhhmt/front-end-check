@@ -1,0 +1,104 @@
+/* Hover Tab Category  */
+.menu-wrapper {
+    position: relative;
+}
+
+/* mega menu hidden */
+.mega-menu {
+    position: absolute;
+    top: 100%;
+    left: -230px;
+    width: 1200px;
+    background: #fff;
+    border-radius: 10px;
+    display: flex;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: 0.3s;
+    z-index: 1000;
+}
+
+/* hover trigger */
+.menu-wrapper:hover .mega-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.menu-left {
+    width: 300px;
+    padding: 15px 0;
+    border-right: 1px solid #eee;
+}
+
+/* title */
+.menu-left h3 {
+    font-size: 16px;
+    font-weight: 600;
+    padding: 0 20px 10px;
+    color: #000000;
+    text-transform: uppercase;
+}
+
+/* list */
+.menu-left ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* item */
+.menu-left li {
+    padding: 12px 20px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+/* hover */
+.menu-left li:hover {
+    background: #f2f2f2;
+    color: #d70018;
+}
+
+/* active */
+.menu-left li.active {
+    background: #f2f2f2;
+    font-weight: 600;
+    color: #d70018;
+}
+
+/* active indicator (gạch đỏ bên trái) */
+.menu-left li.active::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background: #d70018;
+    border-radius: 0 4px 4px 0;
+}
+
+.menu-right {
+    padding: 10px;
+    width: 100% !important;
+}
+.group-items-title {
+    font-size: 15px;
+    color: #555;
+    display: inline-block;
+    transition: color 0.2s ease;
+}
+.group-items-title:hover {
+    color: #fc98a4;
+}
+.group-title{
+    font-size: 18px;
+    font-weight: 600;
+    color: #000000;
+}

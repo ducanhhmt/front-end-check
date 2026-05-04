@@ -1,0 +1,139 @@
+<form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+    <div class="btn-top d-flex justify-content-between">
+        <div class="return-page ms-5 mt-1">
+            <a [routerLink]="['/manage', 'products']" class="text-decoration-none text-secondary">
+                <i class="fa-solid fa-arrow-left"></i>
+                Quay lại danh sách sản phẩm
+            </a>
+        </div>
+        <div class="btn-actions me-2 gap-1 d-flex">
+            <button class="btn-outline">Thoát</button>
+            <div class="me-2"></div>
+            <button class="btn-save" type="submit">Lưu</button>
+        </div>
+    </div>
+    <div class="container pt-3">
+        <div class="image-upload">
+            <label class="title">Ảnh sản phẩm</label>
+            <!-- Upload box: chỉ nhận file từ OS, không nhận reorder drop -->
+            <div class="upload-box" (dragover)="onDragOver($event)" (drop)="onDrop($event)" (click)="fileInput.click()">
+                <input type="file" #fileInput hidden multiple accept="image/*" (change)="onFileChange($event)" />
+                <!-- Placeholder khi chưa có ảnh -->
+                <div *ngIf="images.length === 0" class="placeholder-upload">
+                    <div class="icon">+</div>
+                    <span>Kéo thả hoặc<b> tải ảnh lên từ thiết bị</b></span>
+                </div>
+                <!-- Preview list có thể reorder -->
+                <div class="preview-list" *ngIf="images.length > 0">
+                    <div class="preview-item" *ngFor="let img of images; let i = index" draggable="true"
+                        [class.dragging]="dragIndex === i" [class.drag-over]="dragOverIndex === i"
+                        (dragstart)="onImageDragStart($event, i)" (dragenter)="onImageDragEnter($event, i)"
+                        (dragover)="onImageDragOverItem($event)" (drop)="onImageDrop($event, i)"
+                        (dragend)="onImageDragEnd()">
+                        <img [src]="img.url || img.preview" alt="product image" 
+                        (click)="openPreview(i); $event.stopPropagation()"/>       
+                        <!-- Nút xoá (click không bị trigger drag) -->
+                        <button class="remove" type="button"
+                            (click)="$event.stopPropagation(); removeImage(i)">×</button>
+                    </div>
+                    <!-- Drop zone hint khi đang kéo -->
+                    <div class="drag-hint" *ngIf="dragIndex !== null">
+                        Thả để đổi vị trí
+                    </div>
+                </div>
+            </div>
+            <app-image-preview
+            [images]="images"
+            [openTrigger]="previewTrigger"
+            >
+            </app-image-preview> 
+        </div>
+        <div class="d-flex justify-content-between pt-3">
+            <!-- LEFT -->
+            <div class="left">
+                <div class="section">
+                    <h3>Thông tin chung</h3>
+
+                    <div class="form-group">
+                        <label>Tên sản phẩm</label>
+                        <input type="text" formControlName="name" placeholder="Nhập tên sản phẩm">
+                    </div>
+
+                    <div class="row">
+                        <div class="col form-group">
+                            <label>Series</label>
+                            <input type="text" formControlName="series">
+                        </div>
+                        <div class="col form-group">
+                            <label>Khối lượng (gr)</label>
+                            <input type="number" formControlName="weight">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Mô tả sản phẩm</label>
+                        <textarea rows="3" formControlName="description"></textarea>
+                    </div>
+                </div>
+
+                <div class="section pt-4">
+                    <h3>Giá sản phẩm</h3>
+                    <div class="row">
+                        <div class="col form-group">
+                            <label>Giá nhập</label>
+                            <input type="number" formControlName="importPrice" value="0">
+                        </div>
+                        <div class="col form-group">
+                            <label>Giá bán </label>
+                            <input type="number" formControlName="price" value="0">
+                        </div>
+                        <div class="col form-group">
+                            <label>Giá bán Nxb </label>
+                            <input type="number" formControlName="publisherPrice" value="0">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col form-group">
+                            <label>Chiết khấu (%)</label>
+                            <input type="number" formControlName="discount" value="0">
+                        </div>
+                        <div class="col form-group">
+                            <label>Số lượng</label>
+                            <input type="number" formControlName="quantity" value="0">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT -->
+            <div class="right ms-3" style="height: 100%;">
+                <div class="section">
+                    <h3>Thông tin bổ sung</h3>
+                    <div class="form-group">
+                        <label>Loại sản phẩm</label>
+                        <select>
+                            <option>Chọn loại sản phẩm</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Nhà xuất bản</label>
+                        <select formControlName="nxbId">
+                            <option [value]="0">Chọn nhãn hiệu</option>
+                            <option *ngFor="let nxb of nxbList$ | async" [value]="nxb.id">
+                                {{ nxb.name }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Danh mục</label>
+                        <select formControlName="categoriesId">
+                            <option [value]="0">Chọn danh mục</option>
+                            <option *ngFor="let cat of category$ | async" [value]="cat.id">
+                                {{ cat.name }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

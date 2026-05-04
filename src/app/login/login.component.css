@@ -1,0 +1,102 @@
+.login-page {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url("/assets/img/anime-girl-silhouette-city-night-sky-scenery-art-4k-wallpaper-uhdpaper.com-628@0@f.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.login-wrapper {
+    width: 650px;
+    height: 520px;
+    border-radius: 20px;
+    background: linear-gradient(180deg, #89A8D8, #D6A5B8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0.8;
+}
+
+.login-box {
+    width: 400px;
+    text-align: center;
+}
+
+h2 {
+    opacity: 1;
+    margin: 25px 0 30px;
+    font-weight: 500;
+    color: #000000;
+    letter-spacing: 2px;
+
+}
+
+.divider {
+    height: 1px;
+    width: 70%;
+    background: #fff;
+    margin: 0 auto;
+    opacity: .6;
+}
+
+.divider.bottom {
+    margin-top: 40px;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.input-group i {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #1e3a5f;
+}
+
+.input-group input {
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid #2b4566;
+    background: transparent;
+    padding: 10px 0 10px 30px;
+    outline: none;
+    font-size: 14px;
+}
+
+.options {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 25px;
+}
+
+.options a {
+    text-decoration: none;
+    color: #243a55;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    background: #0e2c4f;
+    color: white;
+    letter-spacing: 2px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .3s;
+    border-radius: 5px;
+}
+
+.login-btn:hover {
+    background: white;
+    color: #0e2c4f;
+    opacity: 1 !important;
+}

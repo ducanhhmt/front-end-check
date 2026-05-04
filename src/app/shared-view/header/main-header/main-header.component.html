@@ -1,0 +1,47 @@
+<header class="header" style="background: white;">
+    <div class="container">
+        <!-- Main header -->
+        <div class="header-main">
+            <!-- Logo -->
+             <a routerLink="/" class="logo">
+                <img src="assets/img/fahasa-logo.png" alt="logo">
+            </a>
+            <!--Danh mục-->
+            <app-header-category [categories]="categories"></app-header-category>
+            <!-- Search -->
+            <div class="search-box search-box me-3 ms-3">
+                <input type="text" [(ngModel)]="searchKeyword" (keyup.enter)="search()" placeholder="Boxset Kính Vạn Hoa">
+                <button (click)="search()">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+            <!-- Right icons -->
+            <div class="header-actions me-3">
+                <div class="action-item">
+                    <i class="fa fa-bell"></i>
+                    <span>Thông Báo</span>
+                </div>
+                <a class="action-item" [routerLink]="['/cart']" style="color: #555;border: none;background: none;">
+                    <i class="fa fa-shopping-cart"></i>               
+                    <span>Giỏ Hàng</span>
+                </a>
+                <!---User Account-->
+                <app-header-user-option (logoutEvent)="onLogout()"></app-header-user-option>
+                <div *ngIf="Role == 'Admin'" class="action-item">
+                    <a [routerLink]="['/manage']" style="color: #555;border: none;background: none;">
+                        <i class="fa-solid fa-bars" title="Quản lý"></i>
+                    </a>
+                    <span>Quản trị</span>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasRightLabel">Offcanvas right</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                ...
+            </div>
+        </div> -->
+    </div>

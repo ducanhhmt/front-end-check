@@ -1,0 +1,216 @@
+<div class="container d-flex pt-3 pb-3">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="avatar">
+            <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
+            <div class="name">{{ (userLogin$ | async)?.name }}</div>
+            <div class="badge">Thành viên Kim cương</div>
+        </div>
+
+        <ul class="menu">
+            <li [class.actived]="activeTab === 'profile'" (click)="setActive('profile')">
+                Hồ sơ cá nhân
+            </li>
+
+            <li [class.actived]="activeTab === 'address'" (click)="setActive('address')">
+                Địa chỉ
+            </li>
+
+            <li [class.actived]="activeTab === 'password'" (click)="setActive('password')">
+                Đổi mật khẩu
+            </li>
+
+            <!-- Router sang order -->
+            <li routerLink="/order" routerLinkActive="active">
+                Đơn hàng của tôi
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main -->
+    <div class="main ps-3">
+        <!-- Form -->
+        <div class="form" [ngSwitch]="activeTab">
+            <!-- Thông tin người dùng -->
+            <ng-container *ngSwitchCase="'profile'">
+                <form [formGroup]="userformData">
+                    <h3>Hồ sơ cá nhân</h3>
+                    <div class="form-group">
+                        <label>Họ</label>
+                        <input type="text" formControlName="firstName">
+                        <small class="error"
+                            *ngIf="userformData.get('firstName')?.touched && userformData.get('firstName')?.invalid">
+                            Không được để trống
+                        </small>
+                    </div>
+                    <div class="form-group ">
+                        <label>Tên</label>
+                        <input type="text" formControlName="lastName">
+                        <small class="error"
+                            *ngIf="userformData.get('lastName')?.touched && userformData.get('lastName')?.invalid">
+                            Không được để trống
+                        </small>
+                    </div>
+                    <div class="form-group ">
+                        <label>Số điện thoại</label>
+                        <input type="text" formControlName="phone">
+                        <small class="error"
+                            *ngIf="userformData.get('phone')?.touched && userformData.get('phone')?.invalid">
+                            Số điện thoại phải 10 số
+                        </small>
+                    </div>
+                    <div class="form-group ">
+                        <label>Email</label>
+                        <input type="email" formControlName="email">
+                    </div>
+                    <div class="form-group ">
+                        <label>Giới tính</label>
+                        <div class="gender">
+                            <label><input type="radio" formControlName="gender" [value]="true"> Nam</label>
+                            <label><input type="radio" formControlName="gender" [value]="false"> Nữ</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Ngày sinh</label>
+                        <input type="date" formControlName="birthday">
+                    </div>
+                    <button class="btn" (click)="updateProfile()">Lưu thay đổi</button>
+                </form>
+            </ng-container>
+            <!-- Địa chỉ (demo) -->
+            <ng-container *ngSwitchCase="'address'">
+                <div class="address-box">
+                    <div class="address-header">
+                        <h3>Sổ địa chỉ</h3>
+                        <span class="add-new" (click)="openAddressModal()">+ Thêm địa chỉ mới</span>
+                    </div>
+                    <!-- Item -->
+                    <div class="address-item" *ngFor="let item of addressList; let i = index">
+                        <div class="address-top">
+                            <div class="left">
+                                <strong class="address-title">{{item.name}}</strong>
+                                <div class="separated"></div>
+                                <span class="phone address-title">{{item.phone}}</span>
+                                <span class="tag default" *ngIf="i === 0">
+                                    Địa chỉ thanh toán mặc định
+                                </span>
+                                <span class="tag" *ngIf="i !== 0">
+                                    Địa chỉ khác
+                                </span>
+                            </div>
+                            <div class="right">
+                                <span class="edit" (click)="openAddressModal(i)">Sửa</span>
+                                <ng-container *ngIf="i > 0">
+                                    <div class="separated"></div>
+                                    <div class="delete-wrap">
+                                        <span class="delete" (click)="requestRemoveAddress(i)">
+                                            <i class="fa-regular fa-trash-can"></i>
+                                        </span>
+                                        <div class="popconfirm" *ngIf="confirmDeleteIndex === i">
+                                            <p>Xóa địa chỉ này?</p>
+                                            <div class="popconfirm-actions">
+                                                <button class="pop-cancel" (click)="cancelRemoveAddress()">Hủy</button>
+                                                <button class="pop-confirm"
+                                                    (click)="confirmRemoveAddress()">Xóa</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+                        <div class="address-detail">
+                            {{item.address}}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal thêm / sửa địa chỉ -->
+                <div class="modal-overlay" *ngIf="showAddressModal" (click)="closeAddressModal()">
+                    <div class="modal-box" (click)="$event.stopPropagation()">
+                        <div class="modal-header">
+                            <h4>{{ editingIndex !== null ? 'Cập nhật địa chỉ' : 'Thêm địa chỉ mới' }}</h4>
+                            <span class="modal-close" (click)="closeAddressModal()">&#x2715;</span>
+                        </div>
+                        <div class="modal-body">
+                            <form [formGroup]="addressForm">
+                                <div class="form-group">
+                                    <label>Họ và tên<span class="required">*</span></label>
+                                    <input type="text" formControlName="name" placeholder="Nhập họ và tên">
+                                    <small class="error"
+                                        *ngIf="addressForm.get('name')?.touched && addressForm.get('name')?.invalid">
+                                        Không được để trống
+                                    </small>
+                                </div>
+                                <div class="form-group">
+                                    <label>Số điện thoại<span class="required">*</span></label>
+                                    <input type="text" formControlName="phone" placeholder="Nhập số điện thoại">
+                                    <small class="error"
+                                        *ngIf="addressForm.get('phone')?.touched && addressForm.get('phone')?.invalid">
+                                        Số điện thoại phải 10 số
+                                    </small>
+                                </div>
+                                <div class="form-group">
+                                    <label>Địa chỉ<span class="required">*</span></label>
+                                    <textarea formControlName="address" style="width: 100%;"
+                                        placeholder="Số nhà, đường, phường, quận, tỉnh/thành" rows="3"></textarea>
+                                    <small class="error"
+                                        *ngIf="addressForm.get('address')?.touched && addressForm.get('address')?.invalid">
+                                        Không được để trống
+                                    </small>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn-cancel" (click)="closeAddressModal()">Hủy</button>
+                            <button class="btn" (click)="submitAddress()">
+                                {{ editingIndex !== null ? 'Lưu thay đổi' : 'Thêm địa chỉ' }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+
+            <!-- Đổi mật khẩu -->
+            <ng-container *ngSwitchCase="'password'">
+                <form [formGroup]="passwordForm">
+                    <h3>Đổi mật khẩu</h3>
+                    <div class="form-group">
+                        <label>Mật khẩu hiện tại<span class="required">*</span></label>
+                        <input type="password" formControlName="currentPassword" placeholder="Mật khẩu hiện tại">
+                        <small class="error"
+                            *ngIf="passwordForm.get('currentPassword')?.touched && passwordForm.get('currentPassword')?.hasError('required')">
+                            Không được để trống
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <label>Mật khẩu mới<span class="required">*</span></label>
+                        <input type="password" formControlName="newPassword" placeholder="Mật khẩu mới">
+                        <small class="error"
+                            *ngIf="passwordForm.get('newPassword')?.touched && passwordForm.get('newPassword')?.hasError('required')">
+                            Không được để trống
+                        </small>
+                        <small class="error"
+                            *ngIf="passwordForm.get('newPassword')?.touched && passwordForm.get('newPassword')?.hasError('minlength')">
+                            Mật khẩu phải ít nhất 6 ký tự
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <label>Nhập lại mật khẩu mới<span class="required">*</span></label>
+                        <input type="password" formControlName="confirmPassword" placeholder="Nhập lại mật khẩu mới">
+                        <small class="error"
+                            *ngIf="passwordForm.get('confirmPassword')?.touched && passwordForm.get('confirmPassword')?.hasError('required')">
+                            Không được để trống
+                        </small>
+                        <small class="error"
+                            *ngIf="passwordForm.get('confirmPassword')?.touched && passwordForm.hasError('notMatch')">
+                            Mật khẩu nhập lại không khớp
+                        </small>
+                    </div>
+                    <button class="btn" (click)="submitPassword()">
+                        Lưu thay đổi
+                    </button>
+                </form>
+            </ng-container>
+        </div>
+    </div>
+</div>

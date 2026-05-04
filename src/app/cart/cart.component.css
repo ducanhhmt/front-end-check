@@ -1,0 +1,432 @@
+.cart-container {
+  display: flex;
+  gap: 20px;
+  background: #f5f5f5;
+  padding: 20px;
+}
+
+/* LEFT */
+.cart-left {
+  flex: 2.5;
+  background: #fff;
+  border-radius: 6px;
+  padding: 16px;
+}
+
+/* HEADER */
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.cart-header h3 {
+  font-size: 18px;
+  margin: 0;
+}
+
+.select-all {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #555;
+}
+
+/* ITEM */
+.cart-item {
+  display: grid;
+  grid-template-columns: 40px 130px 1fr 140px 120px 40px;
+  align-items: center;
+  padding: 15px 0;
+  border-top: 1px solid #eee;
+}
+
+.cart-item:first-child {
+  border-top: none;
+}
+
+.thumb {
+  width: auto;
+  height: 120px;
+  object-fit: cover;
+}
+
+/* INFO */
+.info {
+  padding-right: 10px;
+}
+
+.name {
+  font-size: 14px;
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+/* PRICE */
+.price {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.price .current {
+  color: #fc0101;
+  font-weight: 600;
+}
+
+.price .original {
+  text-decoration: line-through;
+  color: #999;
+  font-size: 13px;
+}
+
+/* QUANTITY */
+.quantity {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  overflow: hidden;
+  width: fit-content;
+}
+
+.quantity button {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: #fff;
+  cursor: pointer;
+  font-size: 16px;
+  color: #555;
+  transition: background 0.2s;
+}
+
+.quantity button:hover {
+  background: #f0f0f0;
+}
+
+.quantity span {
+  min-width: 36px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Stock status badges */
+.stock-status {
+  margin: 4px 0 6px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.badge-soldout {
+  color: #fc0101;
+}
+
+.badge-lowstock {
+  color: #e69500;
+}
+
+/* Disabled checkbox */
+input[type="checkbox"]:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Disabled quantity button */
+.quantity button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  background: #f9f9f9;
+}
+
+/* TOTAL */
+.total {
+  color: #fc0101;
+  font-weight: 600;
+}
+
+/* REMOVE */
+.remove {
+  cursor: pointer;
+  text-align: center;
+  color: #5b5b5b;
+  font-size: 20px;
+}
+
+.remove:hover {
+  color: red;
+}
+
+/* RIGHT */
+.cart-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* PROMO */
+.promo-box,
+.address-shipping {
+  background: #fff;
+  border-radius: 6px;
+  padding: 12px;
+  border: 1px solid #eee;
+}
+
+.address-shipping h4 {
+  margin: 0 0 6px;
+  font-size: 15px;
+}
+
+.promo-box h4 {
+  margin: 0 0 6px;
+  font-size: 15px;
+}
+
+.promo-box p {
+  margin: 0;
+  font-size: 13px;
+  color: #555;
+}
+
+/* SUMMARY */
+.summary {
+  background: #fff;
+  border-radius: 6px;
+  padding: 16px;
+  border: 1px solid #eee;
+  font-size: 1.1em;
+}
+
+.summary .row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.summary .total {
+  font-size: 1.3em;
+  font-weight: 600;
+  color: #fc0101;
+}
+
+.left-title-cart-total {
+  color: #6e6e6e;
+  font-weight: 400;
+  font-size: 15px;
+}
+
+/* BUTTON */
+.checkout-btn {
+  width: 100%;
+  background: #fc0101;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.checkout-btn:hover {
+  opacity: 0.9;
+}
+
+.cart-item.header {
+  font-weight: 600;
+  color: #888;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+/* Địa chỉ giao hàng */
+.address-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  border: 1.5px solid #eee;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.address-card.selected {
+  border-color: #fc0101;
+  background: #fff8f8;
+}
+
+/* Radio circle */
+.radio-circle {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 3px;
+  transition: border-color 0.15s;
+}
+
+.address-card.selected .radio-circle {
+  border-color: #fc0101;
+}
+
+.radio-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #fc0101;
+  display: none;
+}
+
+.address-card.selected .radio-dot {
+  display: block;
+}
+
+.address-icon {
+  color: #fc0101;
+  font-size: 16px;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.address-info {
+  flex: 1;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.address-name {
+  font-weight: 700;
+  font-size: 14px;
+  color: #222;
+}
+
+.address-phone {
+  font-weight: 400;
+  color: #888;
+  font-size: 12px;
+  margin-left: 6px;
+}
+
+.address-detail {
+  color: #555;
+  margin-top: 2px;
+}
+
+.address-badge {
+  display: inline-block;
+  background: #fc0101;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 3px;
+  margin-top: 4px;
+}
+
+.btn-add-address {
+  background: #fff;
+  border: 1.5px dashed #fc0101;
+  color: #fc0101;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.btn-add-address:hover {
+  background: #fff0f0;
+}
+
+/* Modal - tinh chỉnh style */
+.modal-content {
+  border-radius: 10px !important;
+  border: none !important;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+  border-bottom: 0.5px solid #eee !important;
+  padding: 1.25rem 1.5rem;
+}
+
+.modal-title {
+  font-size: 17px !important;
+  font-weight: 600 !important;
+}
+
+.modal-body {
+  padding: 1.25rem 1.5rem;
+}
+
+.modal-footer {
+  border-top: none !important;
+  padding: 0 1.5rem 1.25rem;
+  gap: 10px;
+}
+
+.modal-footer .btn-secondary {
+  flex: 1;
+  background: #fff;
+  border: 1px solid #ddd;
+  color: #333;
+  font-weight: 500;
+}
+
+.modal-footer .btn-secondary:hover {
+  background: #f5f5f5;
+  color: #333;
+}
+
+.btn-luu {
+  flex: 1;
+  background: #fc0101;
+  color: #fff;
+  border: none;
+  font-weight: 500;
+}
+
+.btn-luu:hover {
+  background: #d90000;
+  color: #fff;
+}
+
+.form-label {
+  font-size: 13px;
+  color: #555;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.form-control {
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 9px 12px;
+}
+
+.form-control:focus {
+  border-color: #fc0101;
+  box-shadow: 0 0 0 3px rgba(252, 1, 1, 0.1);
+}
+
+.btn-delete-another-address {
+  background: none;
+  border: none;
+  color: red;
+  font-weight: 600;
+}

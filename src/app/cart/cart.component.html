@@ -1,0 +1,169 @@
+<div class="cart-container container">
+  <div class="cart-left">
+
+    <!-- HEADER -->
+    <div class="cart-header">
+      <h3>GIỎ HÀNG ({{ cartItems.length }} sản phẩm)</h3>
+      <div class="select-all">
+        <input type="checkbox" [checked]="isAllSelected()" (change)="toggleSelectAll($event)">
+        <span>Chọn tất cả</span>
+      </div>
+    </div>
+
+    <!-- LIST ITEM -->
+    <div class="cart-item" *ngFor="let item of cartItems">
+      <input type="checkbox" [(ngModel)]="item.selected" [disabled]="item.soldOut">
+      <img [src]="item.image" class="thumb">
+      <div class="info">
+        <div class="name">
+          <a [routerLink]="['/product-info', item.productId]" style="text-decoration: none;color: #555;">
+            {{ item.name }}
+          </a>
+        </div>
+
+        <div class="price">
+          <span class="current">{{ item.price | number }} đ</span>
+          <span class="original">{{ item.publisherPrice | number }} đ</span>
+        </div>
+
+        <!-- Trạng thái tồn kho -->
+        <div class="stock-status">
+          <span *ngIf="item.soldOut" class="badge-soldout">
+            <i class="fa-solid fa-ban"></i> Sản phẩm đã hết hàng
+          </span>
+          <span *ngIf="!item.soldOut && item.lowStock" class="badge-lowstock">
+            <i class="fa-solid fa-triangle-exclamation"></i> Hiện sản phẩm còn rất ít. Số lượng tối đa có thể chọn là 1
+          </span>
+        </div>
+      </div>
+      <!-- QUANTITY -->
+      <div class="quantity">
+        <button (click)="decrease(item)" [disabled]="item.cartQuantity <= 1">
+          <i class="fa-solid fa-minus"></i>
+        </button>
+        <span>{{ item.cartQuantity }}</span>
+        <button (click)="increase(item)"[disabled]="item.soldOut || (item.lowStock && item.cartQuantity >= item.stockQuantity)">
+          <i class="fa-solid fa-plus"></i>
+        </button>
+      </div>
+      <!-- TOTAL -->
+      <div class="total">
+        {{ item.price * item.cartQuantity | number }} đ
+      </div>
+      <!-- REMOVE -->
+      <div class="remove" (click)="removeItem(item.id)">
+        <i class="fa-regular fa-trash-can"></i>
+      </div>
+    </div>
+  </div>
+  <!-- RIGHT PANEL -->
+  <div class="cart-right">
+    <!-- Thông tin người nhận  -->
+    <div class="address-shipping">
+      <div class="d-flex justify-content-between pb-3">
+        <h4>Địa chỉ giao hàng</h4>
+        <button class="btn-add-address" data-bs-toggle="modal" data-bs-target="#addressModal"
+          [style.display]="isCreatedAnotherAdress ? 'none' : 'block'" title="Thay địa chỉ giao hàng">
+          <i class="fa-solid fa-plus"></i>
+        </button>
+      </div>
+
+      <div class="address-card" *ngFor="let addr of addresses" [class.selected]="addr.id === selectedAddressId"
+        (click)="selectAddress(addr.id)">
+        <!-- Radio circle -->
+        <div class="radio-circle">
+          <div class="radio-dot"></div>
+        </div>
+
+        <div class="address-info">
+          <div class=" d-flex justify-content-between">
+            <div class="address-name">
+              {{ addr.name }}
+              <span class="address-phone">| {{ addr.phone }}</span>
+            </div>
+            <button *ngIf="addr.id !== 1" class="btn-delete-another-address"
+              (click)="deleteNewAddress(addr.id); $event.stopPropagation()">
+              ✕
+            </button>
+          </div>
+
+          <div class="address-detail">{{ addr.adress }}</div>
+          <span class="address-badge" *ngIf="addr.isDefault">MẶC ĐỊNH</span>
+        </div>
+      </div>
+    </div>
+    <!-- Bootstrap Modal -->
+    <div class="modal fade" id="addressModal" tabindex="-1" aria-labelledby="addressModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <h5 class="modal-title" id="addressModalLabel">Thêm địa chỉ mới</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label">Tên người nhận <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" [(ngModel)]="newAddress.name" placeholder="Nhập họ và tên">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Số điện thoại <span class="text-danger">*</span></label>
+              <input type="tel" class="form-control" [(ngModel)]="newAddress.phone" placeholder="Nhập số điện thoại">
+            </div>
+            <div class="mb-1">
+              <label class="form-label">Địa chỉ nhận hàng <span class="text-danger">*</span></label>
+              <textarea class="form-control" [(ngModel)]="newAddress.adress" rows="3"
+                placeholder="Số nhà, tên đường, phường/xã, quận/huyện, tỉnh/thành phố"></textarea>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+            <button type="button" class="btn btn-luu" (click)="creatednewAddress()">Lưu địa chỉ</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="promo-box">
+      <div class="d-flex justify-content-between align-items-center">
+        <h4>Khuyến mãi</h4>
+        <!-- Checkbox -->
+        <input type="checkbox" [checked]="isApplyPromo" [disabled]="!isEligibleForPromo"
+          (change)="onTogglePromo($event)" style="accent-color: #e53935;">
+      </div>
+
+      <p>Giảm 10K cho đơn từ 150K</p>
+
+      <!-- Hiển thị trạng thái -->
+      <small *ngIf="!isEligibleForPromo" class="text-muted">
+        (Chưa đủ điều kiện áp dụng)
+      </small>
+    </div>
+
+    <div class="summary">
+      <div class="d-flex justify-content-between">
+        <span class="left-title-cart-total">Thành tiền</span>
+        <span>{{ subTotal | number }} đ</span>
+      </div>
+
+      <div class="d-flex justify-content-between pt-2">
+        <span class="left-title-cart-total">Phí vận chuyển</span>
+        <span>{{ shippingFee | number }} đ</span>
+      </div>
+
+      <!-- 👉 GIẢM GIÁ -->
+      <div class="d-flex justify-content-between pt-2" *ngIf="isApplyPromo && isEligibleForPromo">
+        <span class="left-title-cart-total">Khuyến mãi</span>
+        <span>-{{ promoDiscount | number }} đ</span>
+      </div>
+
+      <div class="total d-flex justify-content-between pt-2 border-top">
+        <span>Tổng</span>
+        <span>{{ total | number }} đ</span>
+      </div>
+
+      <button class="checkout-btn" (click)="checkout()">THANH TOÁN</button>
+    </div>
+  </div>

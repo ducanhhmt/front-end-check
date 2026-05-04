@@ -22,12 +22,22 @@
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
+                "output": "/assets/"
+              }
             ],
             "styles": [
-              "src/styles.css"
+                "node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
+                "node_modules/bootstrap/dist/css/bootstrap.min.css",
+                "src/styles.css",
+                "node_modules/lightgallery/css/lightgallery-bundle.min.css"
             ],
-            "scripts": [],
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+            ],
             "server": "src/main.server.ts",
             "prerender": true,
             "ssr": {
@@ -96,5 +106,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "1b76702d-d2a1-4ff2-8d10-6401c4b0a4c1"
   }
 }

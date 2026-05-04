@@ -1,0 +1,54 @@
+.filter {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+input {
+  flex: 1;
+  padding: 6px;
+}
+.input-search {
+    display: flex;
+    align-items: center;
+    padding: 5px 12px;
+    background: white;         /* bo góc nhẹ cho đẹp */
+    width: 200%;
+    max-width: 1200px;             /* tùy chỉnh độ rộng nếu cần */
+    transition: all 0.2s ease;
+}
+
+.input-search:focus-within {
+    border-color: #007bff;        /* màu xanh nổi bật khi focus (có thể đổi) */
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+}
+
+/* Icon kính lúp */
+.input-search i {
+    font-size: 22px;
+    color: #555;
+    margin-right: 10px;
+    flex-shrink: 0;               /* không bị co lại */
+}
+
+/* Input */
+.input-search input {
+    border: none;
+    outline: none;                /* tắt border và outline mặc định khi focus */
+    background: transparent;
+    width: 200%;
+    font-size: 16px;
+    padding: 0;
+}
+
+/* Tắt border và outline khi click (focus) */
+.input-search input:focus {
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+.form-control-input-filter{
+    border-radius: 8px;
+    border: 1px solid #dcdcdc;
+}

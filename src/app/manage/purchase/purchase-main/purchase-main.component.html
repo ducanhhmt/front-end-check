@@ -1,0 +1,135 @@
+<app-manage-header [titleHeader]="'Danh sách đơn nhập hàng'"></app-manage-header>
+<div class="content">
+    <div class="product-content-view">
+        <div class="tab-header">
+            <div class="custom-tab-wrapper">
+                <nz-tabset>
+                    <nz-tab nzTitle="Danh sách đơn nhập hàng"></nz-tab>
+                </nz-tabset>
+            </div>
+            <div class="actions">
+                <a class="btn-add-product" [routerLink]="['/manage', 'purchase', 'add']">
+                    <i class="fa-solid fa-plus"></i>
+                    Tạo đơn nhập hàng
+                </a>
+            </div>
+        </div>
+
+        <div class="tab-content">
+            <div class="filter-bar">
+
+                <!-- Search -->
+                <div class="search-wrap">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Tìm mã đơn nhập, đơn đặt hàng, tên, SDT, mã NCC"
+                        [(ngModel)]="keyword" />
+                </div>
+
+                <!-- Trạng thái -->
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        data-bs-auto-close="outside" aria-expanded="false">
+                        Trạng thái
+                    </button>
+                    <div class="dropdown-menu p-2" style="min-width: 200px;">
+                        <div class="form-check mb-1">
+                            <input class="form-check-input" type="checkbox" id="chk-all" [(ngModel)]="selectAllStatus"
+                                (change)="toggleAllStatus()" />
+                            <label class="form-check-label fw-semibold" for="chk-all">Chọn tất cả</label>
+                        </div>
+                        <hr class="my-1" />
+                        <div class="form-check mb-1" *ngFor="let item of statusList; let i = index">
+                            <input class="form-check-input" type="checkbox" [id]="'chk-' + i"
+                                [(ngModel)]="item.checked" />
+                            <label class="form-check-label" [for]="'chk-' + i">{{ item.label }}</label>
+                        </div>
+                        <button class="btn btn-primary btn-sm w-100 mt-2" (click)="applyFilter()">Lọc</button>
+                    </div>
+                </div>
+
+                <!-- Ngày tạo -->
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        data-bs-auto-close="outside" aria-expanded="false">
+                        Ngày tạo
+                    </button>
+                    <div class="dropdown-menu p-2" style="min-width: 280px;">
+                        <div class="date-grid">
+                            <button class="btn btn-outline-secondary btn-sm" [class.active]="selectedDate === 'today'"
+                                (click)="setDate('today')">Hôm nay</button>
+                            <button class="btn btn-outline-secondary btn-sm"
+                                [class.active]="selectedDate === 'yesterday'" (click)="setDate('yesterday')">Hôm
+                                qua</button>
+                            <button class="btn btn-outline-secondary btn-sm"
+                                [class.active]="selectedDate === 'lastWeek'" (click)="setDate('lastWeek')">Tuần
+                                trước</button>
+                            <button class="btn btn-outline-secondary btn-sm"
+                                [class.active]="selectedDate === 'thisWeek'" (click)="setDate('thisWeek')">Tuần
+                                này</button>
+                            <button class="btn btn-outline-secondary btn-sm"
+                                [class.active]="selectedDate === 'lastMonth'" (click)="setDate('lastMonth')">Tháng
+                                trước</button>
+                            <button class="btn btn-outline-secondary btn-sm"
+                                [class.active]="selectedDate === 'thisMonth'" (click)="setDate('thisMonth')">Tháng
+                                này</button>
+                            <button class="btn btn-outline-primary btn-sm" style="grid-column: 1 / -1"
+                                [class.active]="selectedDate === 'custom'" (click)="setDate('custom')">Tùy chọn</button>
+                        </div>
+                        <div class="d-flex align-items-center gap-2 mt-2" *ngIf="selectedDate === 'custom'">
+                            <input type="date" class="form-control form-control-sm" [(ngModel)]="dateFrom" />
+                            <span>-</span>
+                            <input type="date" class="form-control form-control-sm" [(ngModel)]="dateTo" />
+                        </div>
+                        <button class="btn btn-primary btn-sm w-100 mt-2" (click)="applyFilter()">Lọc</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <nz-table [nzData]="products" [nzBordered]="true" [nzSize]="'middle'" [nzFrontPagination]="false"
+                [nzShowPagination]="false">
+                <thead>
+                    <tr>
+                        <th nzWidth="40px" style="text-align: center;"><input type="checkbox" /></th>
+                        <th nzWidth="120px">Mã đơn nhập</th>
+                        <th>Ngày nhập</th>
+                        <th>Trạng thái</th>
+                        <th>Nhà Cung cấp</th>
+                        <th>Người tạo</th>
+                        <th>Giá trị đơn hàng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of products">
+                        <td><input type="checkbox" /></td>
+                        <td>
+                            <img [src]="item.images?.[0] || 'https://via.placeholder.com/40'"
+                                style="width:40px;height:40px;object-fit:cover;border-radius:4px" />
+                        </td>
+                        <td>
+                            <a [routerLink]="['/manage/products', item.id]"
+                                style="color:#555;font-weight:500;text-decoration:none;">{{ item.name }}</a>
+                        </td>
+                        <td>{{ item.categoriesName }}</td>
+                        <td>{{ item.publisherName }}</td>
+                        <td>
+                            <span [style.color]="item.quantity > 0 ? 'green' : 'red'">
+                                {{ item.quantity > 0 ? 'Có' : 'Hết' }}
+                            </span>
+                        </td>
+                        <td>{{ item.quantity || 0 }}</td>
+                    </tr>
+                </tbody>
+            </nz-table>
+
+            <!-- Pagination -->
+            <div style="display:flex; justify-content:flex-end; margin-top:16px">
+                <nz-pagination [nzPageIndex]="filterRequest.pageIndex" [nzPageSize]="filterRequest.pagesize"
+                    [nzTotal]="totalPages * filterRequest.pagesize" [nzShowSizeChanger]="true"
+                    [nzPageSizeOptions]="[10, 20, 50]" (nzPageIndexChange)="onPageIndexChange($event)"
+                    (nzPageSizeChange)="onPageSizeChange($event)">
+                </nz-pagination>
+            </div>
+        </div>
+    </div>
+</div>

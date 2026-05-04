@@ -1,0 +1,94 @@
+<div class="container">
+    <div class="filter-content">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h3>LỌC THEO</h3>
+            <!-- Danh mục chính -->
+            <div class="filter-group">
+                <strong>DANH MỤC CHÍNH</strong>
+                <label><input type="checkbox" (change)="onCategoryChange(1, $event)"> Sách Tiếng Việt</label>
+                <label><input type="checkbox" (change)="onCategoryChange(2, $event)"> Văn Phòng Phẩm - Dụng Cụ Học
+                    Sinh</label>
+                <label><input type="checkbox" (change)="onCategoryChange(3, $event)"> Foreign Books</label>
+                <label><input type="checkbox" (change)="onCategoryChange(4, $event)"> Đồ Chơi</label>
+                <label><input type="checkbox" (change)="onCategoryChange(5, $event)"> Bách Hóa Tổng Hợp</label>
+                <label><input type="checkbox" (change)="onCategoryChange(6, $event)"> Lưu Niệm</label>
+            </div>
+            <!-- Giá -->
+            <div class="filter-group">
+                <strong>GIÁ</strong>
+                <label><input type="radio" name="priceRange" (change)="onPriceRangeChange(0, 150000)"> 0đ -
+                    150.000đ</label>
+                <label><input type="radio" name="priceRange" (change)="onPriceRangeChange(150000, 300000)"> 150.000đ -
+                    300.000đ</label>
+                <label><input type="radio" name="priceRange" (change)="onPriceRangeChange(300000, 500000)"> 300.000đ -
+                    500.000đ</label>
+                <label><input type="radio" name="priceRange" (change)="onPriceRangeChange(500000, 700000)"> 500.000đ -
+                    700.000đ</label>
+                <label><input type="radio" name="priceRange" (change)="onPriceRangeChange(700000, null)"> 700.000đ Trở
+                    Lên</label>
+                <p class="mt-2 mb-1" style="font-size: 13px;">Hoặc chọn mức giá phù hợp</p>
+                <div class="price-input-row">
+                    <input type="number" [(ngModel)]="filterRequest.minPrice" placeholder="0"
+                        (change)="onManualPriceChange()" class="price-input" min="0" />
+                    <span>-</span>
+                    <input type="number" [(ngModel)]="filterRequest.maxPrice" placeholder="0"
+                        (change)="onManualPriceChange()" class="price-input" min="0" />
+                </div>
+                <input type="range" class="price-slider" min="0" max="2000000" step="10000"
+                    [value]="filterRequest.maxPrice || 0" (input)="onSliderChange($event)" />
+            </div>
+        </div> 
+        <!-- Content -->
+        <div class="content p-2">
+            <div class="d-flex justify-content-between pb-2">
+                <div *ngIf="keySearching !== null" class="top-bar mt-2 ps-2"> Kết quả tìm kiếm:
+                    <strong>{{ keySearching }} ({{productDataFilter.totalRecords }} sản phẩm)</strong>
+                </div>
+                <div></div>
+                <select [(ngModel)]="selectedStatus" (ngModelChange)="onStatusChange($event)"
+                    class="form-control-input-filter" style="width: 15%;padding: 5px 10px;">
+                    <option value="instock">Còn hàng</option>
+                    <option value="outofstock">Hết hàng</option>
+                </select>
+            </div>
+
+            <div class="product-grid" *ngIf="!loading; else loadingTemplate">
+                <!-- Product item -->
+                <div class="product-card" *ngFor="let item of productDataFilter.products">
+                    <a [routerLink]="['/product-info', item.id]" style="text-decoration: none;color: #555;">
+                        <div class="image-wrapper">
+                            <img [ngSrc]="item.images?.[0] || 'assets/img/default.png'" alt="{{ item.name }}" fill />
+                            <span class="discount" *ngIf="item.discount">
+                                -{{ item.discount }}%
+                            </span>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="name">{{ item.name }}</h3>
+                            <div class="price">
+                                <span class="new-price">{{ item.price | number }} đ</span>
+                                <span class="old-price" *ngIf="item.publisherPrice">
+                                    {{ item.publisherPrice | number }} đ
+                                </span>
+                            </div>
+                            <span *ngIf="+item.quantity === 0" style="color: red; font-size: 12px;">Hết hàng</span>
+                            <!-- <div class="sold">Đã bán {{ item.sold }}</div> -->
+                        </div>
+                    </a>
+                </div>
+            </div> <!-- Pagination -->
+            <app-pagination-user
+                [pageCount]="productDataFilter.pageCount"
+                [currentPage]="filterRequest.pageIndex"
+                (pageChange)="onPageChange($event)">
+            </app-pagination-user>
+
+            <ng-template #loadingTemplate>
+                <div class="container" style="min-height: 50vh; align-content: center; text-align: center;">
+                    <nz-spin nzSimple [nzSize]="'large'"></nz-spin>
+                    <p class="pt-2">Đang tải dữ liệu...</p>
+                </div>
+            </ng-template>
+        </div>
+    </div>
+</div>

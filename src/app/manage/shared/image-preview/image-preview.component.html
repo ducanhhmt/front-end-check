@@ -1,0 +1,6 @@
+<lightgallery [settings]="settings" [onInit]="onInit" style="display:none">
+    <a *ngFor="let img of images"
+    [attr.href]="img.url || img.preview">
+    <img [src]="img.url || img.preview" />
+    </a>
+</lightgallery>

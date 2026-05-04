@@ -1,0 +1,45 @@
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  /* padding: 15px; */
+  background: #f4f6f8;
+}
+
+.content {
+  padding: 15px;
+  background: #f4f6f8;
+}
+
+.product-content-view {
+    background: white;
+    padding: 10px;
+}
+
+/* container chứa tab + button */
+.tab-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+/* để tab chiếm full chiều ngang còn lại */
+.custom-tab-wrapper {
+    position: relative;
+    flex: 1;
+}
+
+.actions {
+    margin-left: 16px;
+    position: absolute;
+    right: 0;
+    top: 10px;
+}

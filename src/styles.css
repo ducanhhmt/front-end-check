@@ -1,1 +1,147 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+    background: #f5f5f5;
+}
+
+/* menu icon */
+.menu-icon {
+    background: url('/assets/img/ico_menu.svg') no-repeat center center;
+    margin: 0 15px;
+    color: #555;
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+}
+
+.form-control-input-filter {
+    border-radius: 8px;
+    border: 1px solid #dcdcdc;
+    padding-left: 5px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: none;
+}
+
+/* ========== SHARED PRODUCT CARD CSS ========== */
+/* IMAGE */
+.image-wrapper {
+    position: relative;
+    text-align: center;
+    height: 250px;
+    /* ← thêm dòng này */
+}
+
+.image-wrapper img {
+    width: 100%;
+    /* height: 250px; */
+    object-fit: contain;
+}
+
+/* IMAGE-Mobile */
+@media (max-width: 768px) {
+    .image-wrapper {
+        height: 120px;
+        /* ← chuyển height lên wrapper thay vì img */
+    }
+
+    .image-wrapper img {
+        height: unset;
+        /* bỏ override cũ */
+    }
+}
+
+/* GRID */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+}
+
+/* CARD */
+.product-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 10px;
+    transition: 0.2s;
+    cursor: pointer;
+}
+
+.product-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+/* IMAGE */
+.image-wrapper {
+    position: relative;
+    text-align: center;
+    height: 250px;
+}
+
+.image-wrapper img {
+    width: 100%;
+    object-fit: contain;
+}
+
+/* DISCOUNT BADGE */
+.discount {
+    position: absolute;
+    right: 15px;
+    font-size: 13px;
+    padding: 2px 5px;
+    border-radius: 4px;
+    margin-left: 5px;
+    background: red;
+    color: white;
+}
+
+/* INFO */
+.product-info {
+    margin-top: 8px;
+}
+
+.product-info .name {
+    font-size: 14px;
+    max-height: 50px;
+    overflow: hidden;
+}
+
+/* PRICE */
+.product-info .price {
+    margin-top: 6px;
+}
+
+.product-info .new-price {
+    color: red;
+    font-weight: bold;
+    margin-right: 6px;
+    font-size: 17px;
+}
+
+.product-info .old-price {
+    text-decoration: line-through;
+    color: #999;
+    font-size: 13px;
+}
+
+/* SOLD */
+.product-info .sold {
+    font-size: 12px;
+    color: #777;
+    margin-top: 4px;
+}
+
+/* LOAD MORE */
+.load-more {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.load-more a {
+    border: 2px solid red;
+    color: red;
+    background: #fff;
+    padding: 8px 50px;
+    border-radius: 6px;
+}

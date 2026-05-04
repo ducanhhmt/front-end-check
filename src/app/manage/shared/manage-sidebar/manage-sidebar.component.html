@@ -1,0 +1,45 @@
+<div class="sidebar">
+  <div class="logo">SAPO</div>
+
+  <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+
+    <li nz-menu-item routerLink="/manage">
+      <span nz-icon nzType="dashboard"></span>
+      <span>Tổng quan</span>
+    </li>
+
+    <li nz-menu-item>
+      <span nz-icon nzType="shopping-cart"></span>
+      <span>Đơn hàng</span>
+    </li>
+
+    <li nz-menu-item>
+      <span nz-icon nzType="car"></span>
+      <span>Vận chuyển</span>
+    </li>
+
+    <!-- SẢN PHẨM -->
+    <li nz-submenu nzTitle="Sản phẩm" nzIcon="appstore" nzOpen>
+      <ul>
+        <li nz-menu-item routerLink="/manage/products" routerLinkActive="ant-menu-item-selected">
+          Danh sách sản phẩm
+        </li>
+        <li nz-menu-item routerLink="/manage/purchase">Nhập hàng</li>
+        <li nz-menu-item>Kiểm hàng</li>
+      </ul>
+    </li>
+    <!-- Người dùng -->
+    <li nz-submenu nzTitle="Khách hàng" nzIcon="user" nzOpen>
+      <ul>
+        <li nz-menu-item routerLink="/manage/users">
+          Danh sách khách hàng
+        </li>
+        <li nz-menu-item routerLink="/manage/purchase">Nhóm khách hàng</li>
+      </ul>
+    </li>
+    <li nz-menu-item>
+      <span nz-icon nzType="bar-chart"></span>
+      <span>Báo cáo</span>
+    </li>
+  </ul>
+</div>

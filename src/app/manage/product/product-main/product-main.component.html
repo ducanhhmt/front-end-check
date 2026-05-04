@@ -1,0 +1,63 @@
+<app-manage-header [titleHeader]="'Danh sách sản phẩm'"></app-manage-header>
+<div class="content">
+  <div class="product-content-view">
+    <div class="tab-header">
+      <div class="custom-tab-wrapper">
+        <nz-tabset>
+          <nz-tab nzTitle="Danh sách sản phẩm"></nz-tab>
+        </nz-tabset>
+      </div>
+      <div class="actions">
+        <a class="btn-add-product" [routerLink]="['/manage', 'products', 'add']">
+          <i class="fa-solid fa-plus"></i>
+          Thêm sản phẩm
+        </a>
+      </div>
+    </div>
+    <div class="tab-content">
+      <app-manage-filter (filterChange)="onFilterChange($event)"></app-manage-filter>
+      <nz-table [nzData]="products" [nzBordered]="true" [nzSize]="'middle'" [nzFrontPagination]="false"
+        [nzShowPagination]="false">
+        <thead>
+          <tr>
+            <th nzWidth="40px"><input type="checkbox" /></th>
+            <th nzWidth="80px">Ảnh</th>
+            <th>Sản phẩm</th>
+            <th nzWidth="150px">Loại</th>
+            <th nzWidth="150px">Nhà xuất bản</th>
+            <th nzWidth="120px">Có thể bán</th>
+            <th nzWidth="120px">Tồn kho</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of products">
+            <td><input type="checkbox" /></td>
+            <td>
+              <img [src]="item.images?.[0] || 'https://via.placeholder.com/40'"
+                style="width:40px;height:40px;object-fit:cover;border-radius:4px" />
+            </td>
+            <td>
+              <a [routerLink]="['/manage/products', item.id]" style="color:#555;font-weight:500;text-decoration: none;">{{ item.name }}</a>
+            </td>
+            <td>{{ item.categoriesName }}</td>
+            <td>{{ item.publisherName }}</td>
+            <td>
+              <span [style.color]="item.quantity > 0 ? 'green' : 'red'">
+                {{ item.quantity > 0 ? 'Có' : 'Hết' }}
+              </span>
+            </td>
+            <td>{{ item.quantity || 0 }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+
+      <!-- PAGINATION tách riêng -->
+      <div style="display:flex; justify-content:flex-end; margin-top:16px">
+        <nz-pagination [nzPageIndex]="filterRequest.pageIndex" [nzPageSize]="filterRequest.pagesize"
+          [nzTotal]="totalPages * filterRequest.pagesize" [nzShowSizeChanger]="true" [nzPageSizeOptions]="[10, 20, 50]"
+          (nzPageIndexChange)="onPageIndexChange($event)" (nzPageSizeChange)="onPageSizeChange($event)">
+        </nz-pagination>
+      </div>
+    </div>
+  </div>
+</div>

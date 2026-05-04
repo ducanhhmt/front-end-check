@@ -1,0 +1,14 @@
+/* button */
+.btn-add-product {
+    background: #0d6efd;
+    color: white;
+    padding: 6px 20px;
+    text-decoration: none;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+.btn-add-product:hover {
+    background: #0b5ed7;
+    color: whitesmoke;
+}

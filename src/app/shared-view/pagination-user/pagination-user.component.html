@@ -1,0 +1,15 @@
+<div class="pagination" *ngIf="pageCount > 0">
+    <button class="page-btn nav-btn" (click)="onPrev()" [disabled]="currentPage === 1">
+        <i class="fa-solid fa-angle-left"></i>
+    </button>
+    <button
+        *ngFor="let page of pages"
+        class="page-btn"
+        [class.active]="page === currentPage"
+        (click)="onPageClick(page)">
+        {{ page }}
+    </button>
+    <button class="page-btn nav-btn" (click)="onNext()" [disabled]="currentPage === pageCount">
+        <i class="fa-solid fa-angle-right"></i>
+    </button>
+</div>

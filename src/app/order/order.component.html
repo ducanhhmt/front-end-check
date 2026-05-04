@@ -1,0 +1,75 @@
+<div class="container">
+    <div class="userbill-header">
+        <h2 class="page-title">Đơn hàng của tôi</h2>
+        <div class="tabs">
+            <div *ngFor="let tab of tabs; let i = index" class="tab" [class.active]="selectedTab === i"
+                (click)="selectTab(i)">
+                <span>{{ tab.count }}</span>
+                {{ tab.label }}
+            </div>
+        </div>
+    </div>
+    <!-- Empty state -->
+    <div *ngIf="billData.length === 0" class="empty-state">
+        <span nz-icon nzType="inbox" style="font-size: 40px; color: #ccc"></span>
+        <p>Không có đơn hàng nào</p>
+    </div>
+
+    <div class="orders-filter" *ngIf="!queryLoading; else loadingTemplate">
+        <div class="order" *ngFor="let order of billData">
+            <a [routerLink]="['/order', order.id]" class="text-decoration-none">
+                <div class="order-header">
+                    <div>
+                        <span class="order-id">#{{order.id.split('-')[0].toUpperCase()}}</span>
+                        <span class="status" [ngStyle]="getStatusStyle(order.state)">
+                            {{ getStatusLabel(order.state) }}
+                        </span>
+                    </div>
+                    <span class="time-created">{{ order.dateCreated | date:'dd/MM/yyyy - HH:mm' }}</span>
+                </div>
+
+                <div class="order-body border-top border-bottom pt-2 pb-2">
+                    <img [src]="order.items.thumbnail">
+                    <div class="order-info ms-3">
+                        {{ order.items.name }}
+                    </div>
+                </div>
+                <div class="order-footer">
+                    <div></div>
+                    <div>
+                        Tổng tiền: <span class="price">{{ order.totalPrice | number }} đ</span>
+                    </div>
+                </div>
+                <div class="order-footer">
+                    <span>{{ order.itemsCount }} sản phẩm</span>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-cancel">Hủy đơn</button>
+                        <button class="btn btn-rebuy">Mua lại</button>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <ng-template #loadingTemplate>
+        <div class="orders-filter-loading p-3">
+            <div class="loading-state" style="text-align: center;">
+                <nz-spin nzSimple [nzSize]="'large'"></nz-spin>
+                <div>Đang tải dữ liệu ....</div>
+            </div>
+        </div>
+
+    </ng-template>
+    <!-- Pagination -->
+    <!-- <div class="pagination-wrapper p-3 d-flex justify-content-center">
+        <nz-pagination [(nzPageIndex)]="pageIndex" [nzTotal]="total" [nzPageSize]="pageSize" [nzShowSizeChanger]="false"
+            (nzPageIndexChange)="onPageChange($event)">
+        </nz-pagination>
+    </div> -->
+    <div class="pagination-wrapper pb-2">
+        <app-pagination-user 
+            [pageCount]="pageCount" 
+            [currentPage]="pageIndex"
+            (pageChange)="onPageChange($event)">
+    </app-pagination-user>
+    </div>  
+</div>

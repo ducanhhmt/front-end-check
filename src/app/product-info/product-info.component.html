@@ -1,0 +1,183 @@
+<div class="container product-info" *ngIf="product; else loading">
+    <div class="container breadcumb ">
+        <!--Breadcrumb-->
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb pt-2 mb-2" style="margin-bottom: 0;">
+                <li class="breadcrumb-item">
+                    <a routerLink="/" style="text-decoration: none;color: black;">Trang chủ </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page"> Manga - Comic</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="product-info-content pb-3">
+        <!-- LEFT -->
+        <div class="left-content p-2">
+            <div class="image-container">
+                <!-- ẢNH CHÍNH -->
+                <div class="main-image">
+                    <img [src]="product.images[0]" (click)="openPreview(0)" />
+                </div>
+                <!-- THUMB -->
+                <div class="thumb-row p-2">
+                    <ng-container *ngFor="let img of product.images; let i = index">
+                        <img *ngIf="i < 4" [src]="img" (click)="openPreview(i)" />
+                        <div *ngIf="i === 4" class="more" (click)="openPreview(5)">
+                            +{{ product.images.length - 4 }}
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="product-extensions pb-2">
+                <h4>Chính sách ưu đãi của Fahasa</h4>
+                <div class="d-flex extension1 pb-1" style="gap: 5px;font-size: 15px;">
+                    <i class="fa-solid fa-truck" style="color: #C92127;"></i>
+                    <div style="font-weight: 600;">Thời gian giao hàng: </div>
+                    <span>Giao nhanh và uy tín</span>
+                </div>
+                <div class="d-flex extension2 pb-1" style="gap: 5px;font-size: 15px;">
+                    <i class="fa-solid fa-box-open" style="color: #C92127;"></i>
+                    <div style="font-weight: 600;">Chính sách đổi trả: </div>
+                    <span>Đổi trả miễn phí toàn quốc</span>
+                </div>
+                <div class="d-flex extension3 pb-1" style="gap: 5px;font-size: 15px;">
+                    <i class="fa-solid fa-box-open" style="color: #C92127;"></i>
+                    <div style="font-weight: 600;">Chính sách khách sỉ:</div>
+                    <span>Ưu đãi khi mua số lượng lớn</span>
+                </div>
+            </div>
+            <div class="action" style="display: flex;gap: 5px;">
+                <button class="add-cart" (click)="addProducttocart()" [disabled]="product.quantity === 0">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span class="ms-2 fw-semibold" style="font-size: 15px;">Thêm vào giỏ hàng</span>
+                </button>
+                <button class="buy-now fw-semibold" [disabled]="product.quantity === 0">Mua ngay</button>
+            </div>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="right-content">
+            <div class="product-in4 p-2">
+                <h3 class="ps-2 mt-2" style="font-size: 25px;">{{ product.name }}</h3>
+                <div class="meta ps-2">
+                    <div class="nxb-product-info d-flex">
+                        <span class="fw-semibold me-2">Nhà xuất bản:</span>
+                        <a [routerLink]="['/categories', product.nxbId]" style="text-decoration: none;color: #C92127;">
+                            <span>{{ getNameNxb(product.nxbId) }}</span>
+                        </a>
+                    </div>
+                    <div class="author">
+                        <span class="fw-semibold me-2">Tác giả:</span>
+                        <span>Đang cập nhật</span>
+                    </div>
+                </div>
+                <div class="rating d-flex ps-2 pt-2" style="gap: 5px;">
+                    <span>
+                        <i class="fa-solid fa-star" style="color: #ffe6a9;"></i>
+                        <i class="fa-solid fa-star" style="color: #ffe6a9;"></i>
+                        <i class="fa-solid fa-star" style="color: #ffe6a9;"></i>
+                        <i class="fa-solid fa-star" style="color: #ffe6a9;"></i>
+                        <i class="fa-solid fa-star" style="color: #ffe6a9;"></i>
+                    </span>
+                    <div class="border-start ps-3">
+                        <span class="me-2 sold" style=" color: #6e6e6e;">Đã bán :</span>
+                        Chưa cập nhật
+                    </div>
+                </div>
+                <div class="price pt-2 ps-2" style="gap: 5px;">
+                    <span class="saleprice">{{ product.price | number }} đ</span>
+                    <span class="oldprice ms-2">{{ product.publisherPrice | number }} đ</span>
+                    <span class="discount ms-3">-{{ product.discount }}%</span>
+                </div>
+                <small class="product_view_policy_promotion ps-2" style="color: #C92127;">
+                    Chính sách khuyến mãi trên chỉ áp dụng tại Fahasa.com
+                </small>
+                <div *ngIf="product.quantity == 0" class="p-2 mt-2 sold-out">
+                    <span class="text-danger">Sản phẩm đã hết hàng</span>
+                </div>
+            </div>
+            <div class="pt-3"></div>
+            <div class="product-in4 p-2">
+                <div class="section-title">Thông tin vận chuyển</div>
+                <div class="shipping">
+                    Giao hàng đến Phường Cửa Đông, Quận Hoàn Kiếm, Hà Nội
+                    <a href="#">Thay đổi</a>
+                </div>
+                <!-- Voucher -->
+                <div class="section-title">
+                    Ưu đãi liên quan
+                    <a href="#" style="font-size:13px; margin-left:10px;">Xem thêm</a>
+                </div>
+                <div class="voucher-list">
+                    <div class="voucher">
+                        <div class="voucher-icon yellow">%</div>
+                        Mã giảm 10k
+                    </div>
+                    <div class="voucher">
+                        <div class="voucher-icon green">🚚</div>
+                        Mã giảm 22k
+                    </div>
+                    <div class="voucher">
+                        <div class="voucher-icon blue">💳</div>
+                        Zalopay: giảm 15k
+                    </div>
+                    <div class="voucher">
+                        <div class="voucher-icon blue">💳</div>
+                        Shopeepay: giảm 15k
+                    </div>
+                </div>
+                <!-- Quantity -->
+                <div class="section-title">Số lượng:</div>
+                <div class="quantity">
+                    <div class="qty-box">
+                        <button (click)="decrease()">−</button>
+                        <input type="text" id="qty" [(ngModel)]="quantity">
+                        <button (click)="increase()">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="pt-3"></div>
+            <div class="product-in4 p-2">
+                <div class="title">Thông tin chi tiết</div>
+                <table class="info-table">
+                    <tr>
+                        <td class="label">Mã hàng</td>
+                        <td class="value">{{ product.id }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Tên Nhà Cung Cấp</td>
+                        <td class="value">
+                            <a [routerLink]="['/categories', product.nxbId]">{{ getNameNxb(product.nxbId) }}</a>
+                        </td>
+                    </tr>
+                    <tr>
+                    <tr>
+                        <td class="label">NXB</td>
+                        <td class="value">{{ getNameNxb(product.nxbId) }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Trọng lượng (gr)</td>
+                        <td class="value">{{ product.weight | number }}</td>
+                    <tr>
+                        <td class="label">Hình thức</td>
+                        <td class="value">Bìa Mềm</td>
+                    </tr>
+                </table>
+                <div class="description-product pt-3">
+                    <div class="section-title">Mô tả sản phẩm</div>
+                    <p>{{ product.description }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- LOADING -->
+<ng-template #loading>
+    <div class="container" style="min-height: 50vh; align-content: center; text-align: center;">
+        <nz-spin nzSimple [nzSize]="'large'"></nz-spin>
+        <p class="pt-2">Đang tải dữ liệu...</p>
+    </div>
+</ng-template>
+
+<app-image-preview *ngIf="images.length > 0" [images]="images" [openTrigger]="previewTrigger">
+</app-image-preview>

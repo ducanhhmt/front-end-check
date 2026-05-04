@@ -1,0 +1,300 @@
+<div class="purchase-add-wrapper">
+
+    <!-- TOP HEADER -->
+    <div class="top-bar">
+        <a class="back-link" routerLink="/manage/purchases">
+            <i class="fa-solid fa-chevron-left"></i> Quay lại danh sách đơn nhập
+        </a>
+        <div class="top-actions">
+            <button class="btn-ghost">Thoát</button>
+            <button class="btn-outline-blue">Tạo &amp; chưa nhập</button>
+            <div class="btn-split">
+                <button class="btn-primary-blue">Tạo &amp; nhập hàng</button>
+                <button class="btn-primary-blue btn-split-arrow">
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="purchase-body">
+        <!-- LEFT COLUMN -->
+        <div class="left-col">
+
+            <!-- Thông tin nhà cung cấp -->
+            <div class="card">
+                <div class="card-title">Thông tin nhà cung cấp</div>
+
+                <!-- Search NCC -->
+                <div class="supplier-search-wrap">
+                    <div class="search-wrap" [class.focused]="supplierDropdownOpen" (click)="openSupplierDropdown()">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input
+                            type="text"
+                            placeholder="Tìm theo tên, SĐT, mã nhà cung cấp... (F4)"
+                            [(ngModel)]="supplierKeyword"
+                            (input)="onSupplierSearch()"
+                        />
+                    </div>
+
+                    <!-- Supplier dropdown -->
+                    <div class="product-dropdown" *ngIf="supplierDropdownOpen">
+                        <div class="dropdown-add-new">
+                            <i class="fa-solid fa-circle-plus" style="color:#0d6efd"></i>
+                            <span>Thêm mới nhà cung cấp</span>
+                        </div>
+                        <div class="product-list">
+                            <div class="product-item" *ngFor="let s of filteredSuppliers" (click)="selectSupplier(s)">
+                                <div class="supplier-avatar">
+                                    {{ s.name.charAt(0) }}
+                                </div>
+                                <div class="product-info">
+                                    <div class="product-name">{{ s.name }}</div>
+                                    <div class="product-meta">
+                                        <span class="sku">{{ s.code }}</span>
+                                        <span class="sku">•</span>
+                                        <span class="sku">{{ s.phone }}</span>
+                                    </div>
+                                </div>
+                                <div class="supplier-debt" [style.color]="s.debt > 0 ? '#e53935' : '#888'">
+                                    <div style="font-size:11px;color:#aaa">Nợ cần trả</div>
+                                    <div style="font-weight:600">{{ s.debt | number }}đ</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Supplier info card (khi đã chọn) -->
+                <div class="supplier-info-card" *ngIf="selectedSupplier">
+                    <div class="supplier-info-header">
+                        <div class="supplier-avatar lg">{{ selectedSupplier.name.charAt(0) }}</div>
+                        <div>
+                            <div class="supplier-name">{{ selectedSupplier.name }}</div>
+                            <div class="supplier-code">{{ selectedSupplier.code }}</div>
+                        </div>
+                        <button class="btn-remove-supplier" (click)="removeSupplier()">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                    <div class="supplier-detail-grid">
+                        <div class="detail-item">
+                            <i class="fa-solid fa-phone"></i>
+                            <span>{{ selectedSupplier.phone }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fa-solid fa-envelope"></i>
+                            <span>{{ selectedSupplier.email }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <span>{{ selectedSupplier.address }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fa-solid fa-building"></i>
+                            <span>{{ selectedSupplier.company }}</span>
+                        </div>
+                    </div>
+                    <div class="supplier-stats">
+                        <div class="stat-box">
+                            <div class="stat-label">Nợ cần trả</div>
+                            <div class="stat-value debt">{{ selectedSupplier.debt | number }}đ</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Tổng đơn nhập</div>
+                            <div class="stat-value">{{ selectedSupplier.totalOrders }}</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Tổng tiền nhập</div>
+                            <div class="stat-value">{{ selectedSupplier.totalAmount | number }}đ</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Empty state -->
+                <div class="empty-supplier" *ngIf="!selectedSupplier">
+                    <i class="fa-regular fa-address-card empty-icon"></i>
+                    <span>Chưa có thông tin nhà cung cấp</span>
+                </div>
+            </div>
+
+            <!-- Thông tin sản phẩm -->
+            <div class="card">
+                <div class="card-title-row">
+                    <div class="card-title">Thông tin sản phẩm</div>
+                </div>
+
+                <!-- Product search -->
+                <div class="product-search-wrap">
+                    <div class="search-row">
+                        <div class="search-wrap" [class.focused]="productDropdownOpen" (click)="openProductDropdown()">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input
+                                type="text"
+                                placeholder="Tìm theo tên, mã SKU, hoặc quét mã Barcode...(F3)"
+                                [(ngModel)]="productKeyword"
+                                (input)="onProductSearch()"
+                            />
+                        </div>
+                        <button class="btn-chon-nhieu">Chọn nhiều</button>
+                    </div>
+
+                    <!-- Product dropdown -->
+                    <div class="product-dropdown" *ngIf="productDropdownOpen">
+                        <div class="dropdown-add-new">
+                            <i class="fa-solid fa-circle-plus" style="color:#0d6efd"></i>
+                            <span>Thêm mới sản phẩm</span>
+                        </div>
+                        <div class="product-list">
+                            <div class="product-item" *ngFor="let p of filteredProducts" (click)="selectProduct(p)">
+                                <div class="product-thumb">
+                                    <i class="fa-regular fa-image"></i>
+                                </div>
+                                <div class="product-info">
+                                    <div class="product-name">{{ p.name }}</div>
+                                    <div class="product-meta">
+                                        <span class="sku">{{ p.sku }}</span>
+                                        <span class="badge-macdinh">Mặc định</span>
+                                    </div>
+                                </div>
+                                <div class="product-price-info">
+                                    <div>Giá nhập: <strong>{{ p.importPrice | number }}</strong></div>
+                                    <div>
+                                        Tồn: <span>{{ p.stock }}</span> |
+                                        Có thể bán: <span [style.color]="p.available > 0 ? '#333' : 'red'">{{ p.available }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product table -->
+                <table class="product-table" *ngIf="selectedProducts.length > 0">
+                    <thead>
+                        <tr>
+                            <th style="width:40px">STT</th>
+                            <th style="width:50px">Ảnh</th>
+                            <th>Tên sản phẩm</th>
+                            <th style="width:100px">Đơn vị</th>
+                            <th style="width:90px">SL nhập</th>
+                            <th style="width:100px">Đơn giá</th>
+                            <th style="width:100px">Chiết khấu</th>
+                            <th style="width:110px">Thành tiền</th>
+                            <th style="width:40px"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of selectedProducts; let i = index">
+                            <td class="text-center">{{ i + 1 }}</td>
+                            <td class="text-center">
+                                <div class="product-thumb sm"><i class="fa-regular fa-image"></i></div>
+                            </td>
+                            <td>{{ item.name }}</td>
+                            <td>Cái</td>
+                            <td><input type="number" class="qty-input" [(ngModel)]="item.qty" min="1" /></td>
+                            <td><input type="number" class="qty-input" [(ngModel)]="item.importPrice" /></td>
+                            <td><input type="number" class="qty-input" [(ngModel)]="item.discount" /></td>
+                            <td class="text-center">{{ (item.qty * item.importPrice - item.discount) | number }}</td>
+                            <!-- thêm vào tbody, sau cột Thành tiền -->
+                            <td class="text-center">
+                                <button class="btn-remove-row" (click)="removeProduct(i)">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Empty state -->
+                <div class="empty-product" *ngIf="selectedProducts.length === 0">
+                    <img src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png" style="width:60px;opacity:.2" />
+                    <div style="margin-top:8px;color:#aaa">Đơn hàng nhập của bạn chưa có sản phẩm nào</div>
+                    <button class="btn-them-sp" (click)="openProductDropdown()">Thêm sản phẩm</button>
+                </div>
+            </div>
+
+            <!-- Ghi chú & Tags -->
+            <div class="card">
+                <div class="bottom-form">
+                    <div class="form-col">
+                        <label>Ghi chú đơn</label>
+                        <textarea placeholder="VD: Hàng tặng gói riêng" rows="3"></textarea>
+                    </div>
+                    <div class="form-col">
+                        <label>Tags</label>
+                        <input type="text" placeholder="Nhập ký tự và ấn enter" />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div class="right-col">
+
+            <!-- Thông tin đơn nhập hàng -->
+            <div class="card">
+                <div class="card-title">Thông tin đơn nhập hàng</div>
+                <div class="info-row">
+                    <label>Chi nhánh</label>
+                    <select>
+                        <option>Chi nhánh Hoàng Mai</option>
+                        <option>Chi nhánh Cầu Giấy</option>
+                    </select>
+                </div>
+                <div class="info-row">
+                    <label>Nhân viên</label>
+                    <select>
+                        <option>Lưu Văn Linh</option>
+                        <option>Nguyễn Văn A</option>
+                    </select>
+                </div>
+                <div class="info-row">
+                    <label>Ngày hẹn giao</label>
+                    <div class="date-input">
+                        <input type="date" />
+                        <i class="fa-regular fa-calendar"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tổng tiền -->
+            <div class="card summary-card">
+                <div class="summary-row">
+                    <span>Số lượng</span><span>{{ totalQty }}</span>
+                </div>
+                <div class="summary-row">
+                    <span>Tổng tiền</span><span>{{ totalAmount | number }}</span>
+                </div>
+                <div class="summary-row">
+                    <span class="link-blue">Chiết khấu (F6)</span><span>0</span>
+                </div>
+                <div class="summary-row">
+                    <span class="bold">Chi phí nhập hàng</span>
+                </div>
+                <div class="summary-row indent">
+                    <span class="link-blue"><i class="fa-solid fa-circle-plus"></i> Thêm chi phí (F7)</span>
+                </div>
+                <div class="summary-row">
+                    <span>Thuế <i class="fa-solid fa-circle-question" style="font-size:12px;color:#aaa"></i></span>
+                    <span>0</span>
+                </div>
+                <div class="summary-row bold">
+                    <span>Tiền cần trả</span><span>{{ totalAmount | number }}</span>
+                </div>
+                <div class="summary-row bold">
+                    <span>Thanh toán cho NCC</span>
+                </div>
+                <div class="summary-row indent">
+                    <span class="link-blue"><i class="fa-solid fa-circle-plus"></i> Thêm phương thức</span>
+                </div>
+                <div class="summary-row bold">
+                    <span>Còn phải trả</span><span>{{ totalAmount | number }}</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

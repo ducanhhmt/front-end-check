@@ -1,0 +1,155 @@
+.user-menu {
+    position: absolute;
+    top: 100%;
+    width: 500%;
+    background: #fff;
+    border-radius: 10px;
+    display: flex;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: 0.3s;
+    padding: 10px;
+}
+
+.user-isLogin{
+    width: 1000% !important;
+}
+
+.user-wrapper:hover .user-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    z-index: 99;
+}
+
+.action-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
+    color: #555;
+    cursor: pointer;
+}
+
+.action-item i {
+    font-size: 20px;
+    margin-bottom: 3px;
+}
+
+.user-menu-item {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.user-menu .user-menu-content {
+    border-bottom: 1px solid #d4d3d3;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    border-bottom: 1px solid #eee;
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #f2b8a0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 20px;
+    margin-right: 12px;
+}
+
+.profile-info {
+    flex: 1;
+}
+
+.profile-info h4 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.profile-info span {
+    font-size: 13px;
+    color: #888;
+}
+
+.arrow {
+    font-size: 18px;
+    color: #ccc;
+}
+
+.menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.menu li {
+    display: flex;
+    align-items: center;
+    padding: 14px 16px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.menu li:hover {
+    background: #f9f9f9;
+}
+
+.menu i {
+    width: 24px;
+    text-align: center;
+    margin-right: 12px;
+    color: #888;
+}
+
+.menu span {
+    flex: 1;
+    font-size: 14px;
+}
+
+.logout {
+    color: #666;
+}
+
+.btn-login {
+    border: 1px solid red;
+    padding: 7px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+    background: red;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+}
+.btn-login:hover {
+    background: #d10000;
+    font-weight: 600;
+}
+
+.btn-register {
+    border: 2px solid red;
+    padding: 5px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+    background: transparent;
+    color: red;
+    border-radius: 8px;
+    text-decoration: none;
+}
+.btn-register:hover {
+    font-weight: 600;
+}

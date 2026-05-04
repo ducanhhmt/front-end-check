@@ -1,0 +1,110 @@
+<!-- <div class="main-body-content">
+    <div style="padding: 20px">
+        <div *ngIf="!loading && newsList.length === 0">
+            Chưa có dữ liệu
+        </div>
+        <div *ngIf="loading">
+            Đang tìm kiếm...
+        </div>
+        <ul>
+            <li *ngFor="let item of newsList">
+                <h3>{{item.title}}</h3>
+                <p>{{item.description}}</p>
+            </li>
+        </ul>
+    </div>
+</div> -->
+<div class="main-body-content">
+    <div class="container breadcumb ">
+        <!--Breadcrumb-->
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb pt-2 mb-2" style="margin-bottom: 0;">
+                <li class="breadcrumb-item">
+                    <a routerLink="/" style="text-decoration: none;color: black;">Trang chủ </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page"> SIÊU ƯU ĐÃI - MUA SẮM ...</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="banner" style="background: #D1071E;">
+        <img src="/assets/img/Uudaisieuto_Tet_mainbanner.webp" alt="Banner">
+        <div class="sale-banner" style="text-align: center;">
+            <img src="/assets/img/Uudaisieuto_Tet_tagname1_v2.webp" alt="Sale banner">
+        </div>
+    </div>
+    <div class="product-view pb-3" style="background: #D1071E;">
+        <div class="product-section container">
+            <div class="header-tab-product-banner">
+                <span style="border-bottom: 3px solid red;padding-bottom: 10px;">
+                    <img src="/assets/img/ico_sachtrongnuoc.svg" width="32" height="32">
+                    Sản phẩm mới </span>
+            </div>
+            <div class="product-grid">
+                <!-- <div class="product-card" *ngFor="let item of (products$ | async) || []">
+                    <div class="image-wrapper">
+                        <img [src]="item.thumbnailIMG?.[0]" alt="{{ item.name }}" />
+
+                        <span class="discount" *ngIf="item.discount">
+                            -{{ item.discount }}%
+                        </span>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="name">{{ item.name }}</h3>
+
+                        <div class="price">
+                            <span class="new-price">{{ item.price | number }} đ</span>
+                            <span class="old-price" *ngIf="item.publisherPrice">
+                                {{ item.publisherPrice | number }} đ
+                            </span>
+                        </div>
+
+                        <div class="sold">Đã bán {{ item.sold }}</div>
+                    </div>
+                </div> -->
+                <div class="product-card" *ngFor="let item of products">
+                    <a [routerLink]="['/product-info', item.id]" style="text-decoration: none;color: #555;">
+                        <div class="image-wrapper">
+                            <img [ngSrc]="item.images?.[0] || 'assets/img/default.png'" alt="{{ item.name }}" fill />
+                            <span class="discount" *ngIf="item.discount">
+                                -{{ item.discount }}%
+                            </span>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="name">{{ item.name }}</h3>
+                            <div class="price">
+                                <span class="new-price">{{ item.price | number }} đ</span>
+                                <span class="old-price" *ngIf="item.publisherPrice">
+                                    {{ item.publisherPrice | number }} đ
+                                </span>
+                            </div>
+                            <!-- <div class="sold">Đã bán {{ item.sold }}</div> -->
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="load-more pt-2">
+                <a routerLink="/news-product">Xem Thêm</a>
+            </div>
+        </div>
+    </div>
+    <div class="categories-row-banner">
+        <div class="container">
+            <div class="p-2">
+                <div class="cat-wrap">
+                    <div class="cat-header">
+                        <div class="menu-icon"></div>
+                        <h2>Danh mục sản phẩm</h2>
+                    </div>
+                    <div class="cat-grid">
+                        <div class="cat-item" *ngFor="let cat of categories" (click)="onCategoryClick(cat)">
+                            <div class="cat-icon-box">
+                                <i [class]="cat.icon"></i>
+                            </div>
+                            <span class="cat-label">{{ cat.name }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
