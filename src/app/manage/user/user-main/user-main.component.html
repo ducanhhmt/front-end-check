@@ -1,0 +1,74 @@
+<app-manage-header [titleHeader]="'Khách hàng'"></app-manage-header>
+<div class="content">
+    <div class="product-content-view">
+        <div class="tab-header">
+            <div class="custom-tab-wrapper">
+                <nz-tabset>
+                    <nz-tab nzTitle="Danh sách Khách hàng"></nz-tab>
+                </nz-tabset>
+            </div>
+            <div class="actions">
+                <a class="btn-add-product" [routerLink]="['/manage', 'users', 'add']">
+                    <i class="fa-solid fa-plus"></i>
+                    Thêm khách hàng mới
+                </a>
+            </div>
+        </div>
+
+        <div class="tab-content">
+            <div class="filter-bar">
+                <!-- Search -->
+                <div class="search-wrap">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Tìm mã khách hàng, tên, SDT"
+                        [(ngModel)]="keyword" />
+                </div>
+            </div>
+
+            <nz-table [nzData]="products" [nzBordered]="true" [nzSize]="'middle'" [nzFrontPagination]="false"
+                [nzShowPagination]="false">
+                <thead>
+                    <tr>
+                        <th nzWidth="40px" style="text-align: center;"><input type="checkbox" /></th>
+                        <th nzWidth="120px">Mã khách hàng</th>
+                        <th>Tên khách hàng </th>
+                        <th>Số điện thoại</th>
+                        <th>Nhóm khách hàng</th>
+                        <th>SL đơn hàng</th>
+                        <th>Tổng chi tiêu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of products">
+                        <td><input type="checkbox" /></td>
+                        <td>
+                            <img [src]="item.images?.[0] || 'https://via.placeholder.com/40'"
+                                style="width:40px;height:40px;object-fit:cover;border-radius:4px" />
+                        </td>
+                        <td>
+                            <a [routerLink]="['/manage/products', item.id]"
+                                style="color:#555;font-weight:500;text-decoration:none;">{{ item.name }}</a>
+                        </td>
+                        <td>{{ item.categoriesName }}</td>
+                        <td>{{ item.publisherName }}</td>
+                        <td>
+                            <span [style.color]="item.quantity > 0 ? 'green' : 'red'">
+                                {{ item.quantity > 0 ? 'Có' : 'Hết' }}
+                            </span>
+                        </td>
+                        <td>{{ item.quantity || 0 }}</td>
+                    </tr>
+                </tbody>
+            </nz-table>
+
+            <!-- Pagination -->
+            <div style="display:flex; justify-content:flex-end; margin-top:16px">
+                <nz-pagination [nzPageIndex]="filterRequest.pageIndex" [nzPageSize]="filterRequest.pagesize"
+                    [nzTotal]="totalPages * filterRequest.pagesize" [nzShowSizeChanger]="true"
+                    [nzPageSizeOptions]="[10, 20, 50]" (nzPageIndexChange)="onPageIndexChange($event)"
+                    (nzPageSizeChange)="onPageSizeChange($event)">
+                </nz-pagination>
+            </div>
+        </div>
+    </div>
+</div>
