@@ -178,13 +178,6 @@ h2.page-title {
     transition: all .3s;
 }
 
-:host ::ng-deep .ant-pagination-item-active {
-    font-weight: 500;
-    background: #C92127 !important;
-    border-color: #C92127 !important;
-    color: white;
-}
-
 :host ::ng-deep .ant-pagination-item {
     min-width: 40px;
     height: 40px;

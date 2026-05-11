@@ -7,6 +7,7 @@ import { NewsRealTimeSearchService } from '../../../services/news-real-time-sear
 import { signalRService } from '../../../services/signalR.service';
 import { HeaderCategoryComponent } from '../header-category/header-category.component';
 import { HeaderUserOptionComponent } from '../header-user-option/header-user-option.component';
+import { AuthServicesService } from '../../../services/auth-services.service';
 
 @Component({
   selector: 'app-main-header',
@@ -17,19 +18,20 @@ import { HeaderUserOptionComponent } from '../header-user-option/header-user-opt
 })
 export class MainHeaderComponent implements OnInit {
   categories: any = [];
-  Role: string = '';
+  isManager: boolean = false;
   searchKeyword: string = '';
 
   constructor(
     private apiService: ApiServicesService,
     private signalRService: signalRService,
     private newsRealTimeSearchService: NewsRealTimeSearchService,
-    private router: Router
+    private router: Router,
+    private authService: AuthServicesService
   ) { }
 
   ngOnInit(): void {
     this.getMenuCategories()
-    this.Role = this.getCookie('role') || '';
+    this.checkIsManager();
   }
 
   async search() {
@@ -60,6 +62,15 @@ export class MainHeaderComponent implements OnInit {
   }
 
   onLogout(){
-     this.Role = "";
+     this.isManager = false;
+  }
+
+  checkIsManager() {
+     const isAdmin = this.authService.isManager();
+     if(isAdmin) {
+       this.isManager = true;
+     } else {
+       this.isManager = false;
+     }
   }
 }

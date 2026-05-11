@@ -2,12 +2,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BillResponse, BillStateSummary, CartItem, CartItemRequest, CategoryResponse, GetAllBillRequest, GetAllUserBillResponse, 
-   LoginResponse, OrderPayload, ProductAdminFilterRespone,ProductAdminFilterRequest, ProductRespone, UploadResponse, UploadType, 
-   UserRespone, ProductUserFilterRequest,ProductUserFilterRespone,ProductUserDetailRespone,
-   updateUserProfileRequest,
-   updatePasswordRequest,
-   changeUserAddressRequest} from '../interface/interfaceResponeAPI';
-
+   LoginResponse, OrderPayload, ProductAdminFilterRequest, UploadResponse, UploadType, UserRespone, ProductUserFilterRequest,
+   ProductUserFilterRespone, ProductUserDetailRespone,updateUserProfileRequest, updatePasswordRequest, changeUserAddressRequest,
+   ProductAdminPurchaseFilterRequest, ProductAdminPurchaseFilterRespone, ProductAdminFilterRespone, SupplierViewResponse,
+   SupplierInfoResponse, PurchaseResponse,
+   PurchaseOrderRequest,
+   PurchaseViewResponse,
+   PurchaseDetailResponse
+} from '../interface/interfaceResponeAPI';
 @Injectable({
   providedIn: 'root'
 })
@@ -45,9 +47,9 @@ export class ApiServicesService {
     return this.http.put<any>(`${this.apiUrl}/User/changeUserAddress`, data, { headers })
   }
   //////======================Sản phẩm======================//////
-  getall(): Observable<ProductRespone[]> {
-    return this.http.get<ProductRespone[]>(`${this.apiUrl}/Product`);
-  }
+  // getall(): Observable<ProductRespone[]> {
+  //   return this.http.get<ProductRespone[]>(`${this.apiUrl}/Product`);
+  // }
   AdminGetproductbyid(id: string): Observable<ProductUserDetailRespone> {
     return this.http.get<ProductUserDetailRespone>(`${this.apiUrl}/Product/admin-search/${id}`);
   }
@@ -62,6 +64,11 @@ export class ApiServicesService {
    getproductbyUserFilter(data: ProductUserFilterRequest): Observable<ProductUserFilterRespone> {
     return this.http.post<ProductUserFilterRespone>(`${this.apiUrl}/Product/UserFilter`, data);
   }
+
+  getproductbyAdminPurchaseFilter(data: ProductAdminPurchaseFilterRequest): Observable<ProductAdminPurchaseFilterRespone[]> {
+    return this.http.post<ProductAdminPurchaseFilterRespone[]>(`${this.apiUrl}/Product/AdminPurchaseFilter`, data);
+  }
+
   addProduct(data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/Product`, data);
   }
@@ -126,6 +133,37 @@ export class ApiServicesService {
       `${this.apiUrl}/Upload/Upload`,
       formData
     );
+  }
+
+  ///////======================Nhà cung cấp======================//////
+  getAllSuppliers(): Observable<SupplierViewResponse[]> {
+    return this.http.get<SupplierViewResponse[]>(`${this.apiUrl}/Supplier`);
+  }
+  getSupplierInfo(supplierId: number): Observable<SupplierInfoResponse> {
+     const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.get<SupplierInfoResponse>(`${this.apiUrl}/Supplier/SupplierInfo/${supplierId}`, { headers });
+  }
+
+  ///////======================Đơn nhập kho======================//////
+  purchasePaginationFilter(data: ProductAdminPurchaseFilterRequest): Observable<PurchaseResponse> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.post<PurchaseResponse>(`${this.apiUrl}/Purchase`, data, { headers });
+  }
+  purchaseInfo(id:string): Observable<PurchaseDetailResponse> {
+     const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.get<PurchaseDetailResponse>(`${this.apiUrl}/Purchase?id=${id}`, { headers });
+  }
+  createPurchaseOrder(data: PurchaseOrderRequest): Observable<boolean> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.post<boolean>(`${this.apiUrl}/Purchase/Add`, data, { headers });
   }
   //////////////======================NEWS REAL TIME SEARCH======================//////////////
   searching(keyword: string, requestId: string): Promise<any> {

@@ -86,12 +86,12 @@
 
             </div>
 
-            <nz-table [nzData]="products" [nzBordered]="true" [nzSize]="'middle'" [nzFrontPagination]="false"
+            <nz-table [nzData]="datas" [nzBordered]="true" [nzSize]="'middle'" [nzFrontPagination]="false"
                 [nzShowPagination]="false">
                 <thead>
                     <tr>
-                        <th nzWidth="40px" style="text-align: center;"><input type="checkbox" /></th>
-                        <th nzWidth="120px">Mã đơn nhập</th>
+                        <th style="text-align: center;"><input type="checkbox" /></th>
+                        <th>Mã đơn nhập</th>
                         <th>Ngày nhập</th>
                         <th>Trạng thái</th>
                         <th>Nhà Cung cấp</th>
@@ -100,32 +100,33 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let item of products">
-                        <td><input type="checkbox" /></td>
+                    <tr *ngFor="let item of datas">
+                        <td style="text-align: center;"><input type="checkbox" /></td>
                         <td>
-                            <img [src]="item.images?.[0] || 'https://via.placeholder.com/40'"
-                                style="width:40px;height:40px;object-fit:cover;border-radius:4px" />
+                            <a [routerLink]="['/manage/purchase', item.id]"
+                                style="color:#555;font-weight:500;text-decoration:none;">{{ item.id.split('-')[0].toUpperCase() }}</a>
                         </td>
+                        <td>{{ item.dateCreated | date:'dd/MM/yyyy' }}</td>
                         <td>
-                            <a [routerLink]="['/manage/products', item.id]"
-                                style="color:#555;font-weight:500;text-decoration:none;">{{ item.name }}</a>
-                        </td>
-                        <td>{{ item.categoriesName }}</td>
-                        <td>{{ item.publisherName }}</td>
-                        <td>
-                            <span [style.color]="item.quantity > 0 ? 'green' : 'red'">
-                                {{ item.quantity > 0 ? 'Có' : 'Hết' }}
+                            <span [ngClass]="{
+                                'state-processing': item.state === 0,
+                                'state-completed': item.state === 1, 
+                                'state-cancelled': item.state === 2
+                            }">
+                                {{ getStatusLabel(item.state) }}
                             </span>
                         </td>
-                        <td>{{ item.quantity || 0 }}</td>
+                        <td>{{ item.supplierName }}</td>
+                        <td>{{ item.userCreated }}</td>
+                        <td>{{ item.importPrice | currency:'VND':'symbol':'1.0-0' }}</td>
                     </tr>
                 </tbody>
             </nz-table>
 
             <!-- Pagination -->
             <div style="display:flex; justify-content:flex-end; margin-top:16px">
-                <nz-pagination [nzPageIndex]="filterRequest.pageIndex" [nzPageSize]="filterRequest.pagesize"
-                    [nzTotal]="totalPages * filterRequest.pagesize" [nzShowSizeChanger]="true"
+                <nz-pagination [nzPageIndex]="filterRequest.pageIndex" [nzPageSize]="filterRequest.pageSize"
+                    [nzTotal]="totalPages * filterRequest.pageSize" [nzShowSizeChanger]="true"
                     [nzPageSizeOptions]="[10, 20, 50]" (nzPageIndexChange)="onPageIndexChange($event)"
                     (nzPageSizeChange)="onPageSizeChange($event)">
                 </nz-pagination>

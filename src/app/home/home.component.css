@@ -2,6 +2,28 @@
     min-height: 100vh;
 }
 
+.banner {
+    overflow: hidden;
+    text-align: center;
+}
+
+.banner > img {
+    width: 100%;
+    display: block;
+}
+
+.sale-banner {
+    text-align: center;
+    padding: 12px 0;
+}
+
+.sale-banner img {
+    max-width: 600px;
+    width: 60%;
+    height: auto;
+    display: inline-block;
+}
+
 .categories-row-banner {
     background: url("../../assets/img/flash_sale_background_image.jpg");
 }
@@ -92,91 +114,6 @@
     padding-bottom: 5px;
     width: 100%;
 }
-
-/* GRID - moved to app.component.css */
-/* .product-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 10px;
-} */
-
-/* CARD - moved to app.component.css */
-/* .product-card {
-    background: #fff;
-    border-radius: 8px;
-    padding: 10px;
-    transition: 0.2s;
-    cursor: pointer;
-}
-
-.product-card:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transform: translateY(-2px);
-} */
-
-/* IMAGE */
-/* .image-wrapper {
-    position: relative;
-    text-align: center;
-    height: 250px; 
-}
-
-.image-wrapper img {
-    width: 100%;
-    object-fit: contain;
-} */
-
-/* IMAGE-Mobile */
-/* @media (max-width: 768px) {
-    .image-wrapper {
-        height: 120px; 
-    }
-
-    .image-wrapper img {
-        height: unset; 
-    }
-} */
-
-/* DISCOUNT BADGE - moved to app.component.css */
-/* .discount {
-    position: absolute;
-    top: 0;
-    right: 8px;
-    background: red;
-    color: #fff;
-    font-size: 13px;
-    padding: 8px 8px;
-    border-radius: 50%;
-} */
-
-/* INFO - moved to app.component.css */
-/* .product-info {
-    margin-top: 8px;
-}
-
-.name {
-    font-size: 14px;
-    max-height: 50px;
-    overflow: hidden;
-} */
-
-/* PRICE - moved to app.component.css */
-/* .price {
-    margin-top: 6px;
-}
-
-.new-price {
-    color: red;
-    font-weight: bold;
-    margin-right: 6px;
-    font-size: 17px;
-}
-
-.old-price {
-    text-decoration: line-through;
-    color: #999;
-    font-size: 13px;
-} */
 
 /* SOLD */
 .sold {

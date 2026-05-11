@@ -8,7 +8,7 @@ import { ApiServicesService } from '../../../services/api-services.service';
 import { ProductRealTimeServices } from '../../../services/product-realtime';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { ProductAdminFilterRequest, ProductAdminListing } from '../../../interface/interfaceResponeAPI';
+import { ProductAdminListing, ProductAdminPurchaseFilterRequest, PurchaseViewResponse } from '../../../interface/interfaceResponeAPI';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { FormsModule } from '@angular/forms';
 
@@ -36,14 +36,11 @@ export class PurchaseMainComponent implements OnInit {
   dateTo: string = '';
   category$!: Observable<any[]>;
   categories: any[] = [];
-  products: ProductAdminListing[] = [];
+  datas: PurchaseViewResponse[] = [];
 
-  filterRequest: ProductAdminFilterRequest = {
+  filterRequest: ProductAdminPurchaseFilterRequest = {
     keyword: null,
-    categoryId: null,
-    nxbId: null,
-    stock: 'all',
-    pagesize: 10,
+    pageSize: 10,
     pageIndex: 1
   };
 
@@ -56,7 +53,7 @@ export class PurchaseMainComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadProducts();
+    this.loadPurchase();
     this.category$ = this.dataService.category$;
     this.dataService.loadCategories();
     this.category$.subscribe(data => {
@@ -64,24 +61,22 @@ export class PurchaseMainComponent implements OnInit {
     });
   }
 
-  loadProducts() {
-    this.apiService.getproductbyAdminFilter(this.filterRequest).subscribe(res => {
-      this.products = res.products;
+  loadPurchase() {
+    this.apiService.purchasePaginationFilter(this.filterRequest).subscribe(res => {
+      this.datas = res.data;
       this.totalPages = res.pageCount;
       this.totalRecords = res.totalRecords;
     });
+    console.log("purchase:", this.datas);
   }
 
   onFilterChange(data: any) {
     this.filterRequest = {
       ...this.filterRequest,
       keyword: data.keyword ?? null,
-      categoryId: data.categoryId ?? null,
-      nxbId: data.publisherId ?? null,
-      stock: data.stock ?? 'all',
       pageIndex: 1
     };
-    this.loadProducts();
+    this.loadPurchase();
   }
 
   toggleAllStatus() {
@@ -120,12 +115,21 @@ export class PurchaseMainComponent implements OnInit {
 
   onPageIndexChange(index: number): void {
     this.filterRequest.pageIndex = index;
-    this.loadProducts();
+    this.loadPurchase();
   }
 
   onPageSizeChange(size: number): void {
-    this.filterRequest.pagesize = size;
+    this.filterRequest.pageSize = size;
     this.filterRequest.pageIndex = 1;
-    this.loadProducts();
+    this.loadPurchase();
+  }
+
+  getStatusLabel(state: number): string {
+    const statusMap = {
+      0: 'Đang giao dịch',
+      1: 'Hoàn thành',
+      2: 'Đã hủy'
+    };
+    return statusMap[state as keyof typeof statusMap] || 'Không xác định';
   }
 }

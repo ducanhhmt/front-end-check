@@ -37,10 +37,6 @@ export class AuthServicesService {
   }
   isManager(): boolean {
     const cookies = document.cookie.split(';');
-    // const roleCookie = cookies.find(c => c.trim().startsWith('role='));
-    // if (!roleCookie) return false;
-    // const role = roleCookie.split('=')[1];
-    // return role === 'Admin'; // admin = true, user = false
     const tokenCookie = cookies.find(c => c.trim().startsWith('token='));
     if (!tokenCookie) return false;
 

@@ -52,6 +52,7 @@ export class ProductMainComponent implements OnInit {
       this.products = res.products;
       this.totalPages = res.pageCount;
       this.totalRecords = res.totalRecords;
+      console.log('Products:', this.products);
     });
   }
   onFilterChange(data: any) {

@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { ProductRealTimeServices } from '../services/product-realtime';
 import { Observable } from 'rxjs';
-import { ProductAdminFilterRequest, ProductAdminListing, ProductUserFilterRequest, ProductUserListing} from '../interface/interfaceResponeAPI';
+import { ProductAdminFilterRequest, ProductAdminListing, ProductUserFilterRequest, ProductUserFilterRespone, ProductUserListing} from '../interface/interfaceResponeAPI';
 import { NgOptimizedImage } from '@angular/common';
 @Component({
   selector: 'app-home',
@@ -14,7 +14,7 @@ import { NgOptimizedImage } from '@angular/common';
   styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit, OnChanges {
-  products$!: Observable<any[]>;
+  products$!: Observable<ProductUserFilterRespone[]>;
   newsList: any[] = [];
   loading: boolean = false;
   filterRequest: ProductUserFilterRequest = {

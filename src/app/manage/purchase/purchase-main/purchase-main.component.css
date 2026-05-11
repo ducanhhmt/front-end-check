@@ -69,3 +69,38 @@ button.btn-outline-secondary.dropdown-toggle.show {
     border-color: #0088ff;
     color: #0088ff;
 }
+
+/* Hoàn thành */
+.state-completed {
+    display: inline-block;
+    padding: 2px 12px;
+    border-radius: 20px;
+    border: 1px solid #52c41a;
+    color: #52c41a;
+    background-color: transparent;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+/* Đang giao dịch */
+.state-processing {
+    display: inline-block;
+    padding: 2px 12px;
+    border-radius: 20px;
+    border: 1px solid #faad14;
+    color: #faad14;
+    background-color: transparent;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.state-cancelled {
+    display: inline-block;
+    padding: 2px 12px;
+    border-radius: 20px;
+    border: 1px solid #ff4d4f;
+    color: #ff4d4f;
+    background-color: transparent;
+    font-size: 13px;
+    white-space: nowrap;
+}

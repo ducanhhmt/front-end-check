@@ -82,6 +82,10 @@ export const routes: Routes = [
         title: "Danh sách đơn nhập hàng"
       },
       { path: 'purchase/add', component: PurchaseManageComponent, title: "Tạo mới đơn nhập hàng" },
+      { path: 'purchase/:id', 
+        loadComponent: () => import('./manage/purchase/purchase-manage/purchase-manage.component').then(m => m.PurchaseManageComponent),
+        title: (route) => `Chi tiết đơn nhập #${route.params['id'].split('-')[0].toUpperCase()}` 
+      },
       { path: 'users', 
         component: UserMainComponent,
         title: "Danh sách khách hàng"

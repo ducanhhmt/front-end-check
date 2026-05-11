@@ -15,21 +15,6 @@ export interface Group {
   items: string[];
 }
 
-export interface ProductRespone {
-  id: number;
-  name: string;
-  nxbId: number;
-  categoriesId: number;
-  weight: number;
-  importPrice: number;
-  price: number;
-  quantity: number;
-  discount: number;
-  dateCreated: Date;
-  description: string;
-  thumbnailIMG: string[];
-}
-
 export interface ProductAdminDetailRespone {
   id: number;
   name: string;
@@ -89,6 +74,14 @@ export interface ProductAdminFilterRespone {
   totalRecords: number;
 }
 
+export interface ProductAdminPurchaseFilterRespone{
+  id: string;
+  name: string;
+  importPrice: number;
+  quantity: number;
+  images: string;
+}
+
 export interface ProductUserFilterRespone {
   products: ProductUserListing[];
   pageCount: number;
@@ -113,6 +106,20 @@ export interface ProductUserFilterRequest {
   maxPrice: number | null;
   pagesize: number;
   pageIndex: number;
+}
+
+export interface ProductAdminPurchaseFilterRequest {
+  keyword: string | null; 
+  pageIndex: number | 1;
+  pageSize: number | 10;
+}
+
+export interface ProductAdminPurchaseFilterRespone{
+  id: string;
+  name: string;
+  importPrice: number;
+  quantity: number;
+  images: string;
 }
 
 export interface ImageItem {
@@ -154,14 +161,11 @@ export interface CartItem {
   selected: boolean;
 }
 
-
 export interface CartItemRequest {
   productId: string | null;
   userId: string | null;
   quantity: number;
 }
-
-
 
 ///=================== ORDER ==================//
 export interface OrderPayload {
@@ -179,7 +183,6 @@ export interface OrderItem {
   productId: string;
   quantity: number;
 }
-
 
 export interface BillStateSummary {
   all: number;
@@ -260,4 +263,76 @@ export interface updatePasswordRequest {
 export interface changeUserAddressRequest {
   id: string | null;
   address: string;
+}
+
+///=================== Supplier ==================//
+export interface SupplierViewResponse {
+  id: number;
+  name: string;
+}
+export interface SupplierInfoResponse {
+  id: number;
+  name: string;
+  phone: string;
+  email: string;
+  address: string;
+  debt: number;
+  totalOrders: number;
+  totalAmount: number;
+}
+///=================== Purchase ==================//
+
+
+
+export interface PurchaseResponse {
+  data: PurchaseViewResponse[];
+  totalRecords: number;
+  pageCount: number;
+}
+
+export interface PurchaseViewResponse {
+  id:string;
+  userCreated: string;
+  supplierName: string;
+  description: string;
+  importPrice: number;
+  dateCreated: Date;
+  state: number;
+}
+export interface PurchaseDetailResponse {
+  id:string;
+  userCreated: string;
+  supplierId: number;
+  description: string;
+  importPrice: number;
+  purchaseItems: PurchaseItemResponse[];
+  dateCreated: Date;
+  state: number;
+}
+export interface PurchaseItemResponse {
+  productId: string;
+  productname: string;
+  images: string;
+  importPrice: number;
+  quantity:number;
+  totalPrice: number;
+}
+export interface PurchaseOrderRequest {
+  id : string | null;
+  userCreated : string;
+  supplierId : number ;
+  ImportPrice : number;
+  purchaseItems : PurchaseItemRequest[];
+  description : string;
+  //Discount : number;
+  dateCreated: Date;
+  State : number;
+}
+
+export interface PurchaseItemRequest {
+  purchaseId: string;
+  productId: string;
+  importPrice: number;
+  quantity: number;
+  totalPrice: number;
 }

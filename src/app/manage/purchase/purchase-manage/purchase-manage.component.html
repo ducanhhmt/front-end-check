@@ -7,9 +7,9 @@
         </a>
         <div class="top-actions">
             <button class="btn-ghost">Thoát</button>
-            <button class="btn-outline-blue">Tạo &amp; chưa nhập</button>
+            <button class="btn-outline-blue" (click)="submitOrder(0)">Tạo &amp; chưa nhập</button>
             <div class="btn-split">
-                <button class="btn-primary-blue">Tạo &amp; nhập hàng</button>
+                <button class="btn-primary-blue" (click)="submitOrder(1)">Tạo &amp; nhập hàng</button>
                 <button class="btn-primary-blue btn-split-arrow">
                     <i class="fa-solid fa-chevron-down"></i>
                 </button>
@@ -50,17 +50,8 @@
                                     {{ s.name.charAt(0) }}
                                 </div>
                                 <div class="product-info">
-                                    <div class="product-name">{{ s.name }}</div>
-                                    <div class="product-meta">
-                                        <span class="sku">{{ s.code }}</span>
-                                        <span class="sku">•</span>
-                                        <span class="sku">{{ s.phone }}</span>
-                                    </div>
-                                </div>
-                                <div class="supplier-debt" [style.color]="s.debt > 0 ? '#e53935' : '#888'">
-                                    <div style="font-size:11px;color:#aaa">Nợ cần trả</div>
-                                    <div style="font-weight:600">{{ s.debt | number }}đ</div>
-                                </div>
+                                    <div class="product-name">{{ s.name }}</div> 
+                                </div>                               
                             </div>
                         </div>
                     </div>
@@ -72,7 +63,7 @@
                         <div class="supplier-avatar lg">{{ selectedSupplier.name.charAt(0) }}</div>
                         <div>
                             <div class="supplier-name">{{ selectedSupplier.name }}</div>
-                            <div class="supplier-code">{{ selectedSupplier.code }}</div>
+                            <div class="supplier-code">NCC-000{{ selectedSupplier.id }}</div>
                         </div>
                         <button class="btn-remove-supplier" (click)="removeSupplier()">
                             <i class="fa-solid fa-xmark"></i>
@@ -93,7 +84,7 @@
                         </div>
                         <div class="detail-item">
                             <i class="fa-solid fa-building"></i>
-                            <span>{{ selectedSupplier.company }}</span>
+                            <span></span>
                         </div>
                     </div>
                     <div class="supplier-stats">
@@ -141,31 +132,62 @@
                     </div>
 
                     <!-- Product dropdown -->
-                    <div class="product-dropdown" *ngIf="productDropdownOpen">
+                    <!-- (scroll) bind vào chính .product-dropdown vì nó là phần tử overflow-y: auto -->
+                    <div
+                        class="product-dropdown"
+                        *ngIf="productDropdownOpen"
+                        (scroll)="onProductDropdownScroll($event)"
+                    >
                         <div class="dropdown-add-new">
                             <i class="fa-solid fa-circle-plus" style="color:#0d6efd"></i>
                             <span>Thêm mới sản phẩm</span>
                         </div>
+
                         <div class="product-list">
-                            <div class="product-item" *ngFor="let p of filteredProducts" (click)="selectProduct(p)">
+                            <div class="product-item" *ngFor="let p of ProductFiltered" (click)="selectProduct(p)">
+
+                                <!-- Thumbnail: dùng <img> thường, container giữ kích thước cố định -->
                                 <div class="product-thumb">
-                                    <i class="fa-regular fa-image"></i>
+                                    <img
+                                        [src]="p.images ? p.images : 'assets/img/default.png'"
+                                        [alt]="p.name"
+                                        class="product-thumb-img"
+                                        (error)="onImgError($event)"
+                                    />
                                 </div>
+
                                 <div class="product-info">
                                     <div class="product-name">{{ p.name }}</div>
                                     <div class="product-meta">
-                                        <span class="sku">{{ p.sku }}</span>
+                                        <span class="sku">{{ p.id.split('-')[0].toUpperCase() }}</span>
                                         <span class="badge-macdinh">Mặc định</span>
                                     </div>
                                 </div>
                                 <div class="product-price-info">
                                     <div>Giá nhập: <strong>{{ p.importPrice | number }}</strong></div>
                                     <div>
-                                        Tồn: <span>{{ p.stock }}</span> |
-                                        Có thể bán: <span [style.color]="p.available > 0 ? '#333' : 'red'">{{ p.available }}</span>
+                                        Tồn: <span>{{ p.quantity }}</span> |
+                                        Có thể bán: <span [style.color]="p.quantity > 0 ? '#333' : 'red'">{{ p.quantity }}</span>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+
+                        <!-- Loading indicator (lazy load) -->
+                        <div class="dropdown-loading" *ngIf="isLoadingMore">
+                            <i class="fa-solid fa-spinner fa-spin"></i>
+                            <span>Đang tải thêm...</span>
+                        </div>
+
+                        <!-- Hết danh sách -->
+                        <div class="dropdown-no-more" *ngIf="!hasMoreProducts && ProductFiltered.length > 0 && !isLoadingMore">
+                            <span>Đã hiển thị tất cả sản phẩm</span>
+                        </div>
+
+                        <!-- Empty state trong dropdown -->
+                        <div class="dropdown-empty" *ngIf="!isLoadingMore && ProductFiltered.length === 0">
+                            <i class="fa-regular fa-folder-open"></i>
+                            <span>Không tìm thấy sản phẩm</span>
                         </div>
                     </div>
                 </div>
@@ -189,15 +211,22 @@
                         <tr *ngFor="let item of selectedProducts; let i = index">
                             <td class="text-center">{{ i + 1 }}</td>
                             <td class="text-center">
-                                <div class="product-thumb sm"><i class="fa-regular fa-image"></i></div>
+                                <!-- Ảnh trong bảng -->
+                                <div class="product-thumb sm">
+                                    <img
+                                        [src]="item.images || 'assets/img/default.png'"
+                                        [alt]="item.name"
+                                        class="product-thumb-img"
+                                        (error)="onImgError($event)"
+                                    />
+                                </div>
                             </td>
                             <td>{{ item.name }}</td>
                             <td>Cái</td>
                             <td><input type="number" class="qty-input" [(ngModel)]="item.qty" min="1" /></td>
                             <td><input type="number" class="qty-input" [(ngModel)]="item.importPrice" /></td>
                             <td><input type="number" class="qty-input" [(ngModel)]="item.discount" /></td>
-                            <td class="text-center">{{ (item.qty * item.importPrice - item.discount) | number }}</td>
-                            <!-- thêm vào tbody, sau cột Thành tiền -->
+                            <td class="text-center">{{(item.qty * item.importPrice * (1 - item.discount / 100)) | number:'1.0-0'}}</td>
                             <td class="text-center">
                                 <button class="btn-remove-row" (click)="removeProduct(i)">
                                     <i class="fa-solid fa-xmark"></i>
@@ -220,11 +249,7 @@
                 <div class="bottom-form">
                     <div class="form-col">
                         <label>Ghi chú đơn</label>
-                        <textarea placeholder="VD: Hàng tặng gói riêng" rows="3"></textarea>
-                    </div>
-                    <div class="form-col">
-                        <label>Tags</label>
-                        <input type="text" placeholder="Nhập ký tự và ấn enter" />
+                        <textarea [(ngModel)]="description" placeholder="VD: Hàng tặng gói riêng" rows="3"></textarea>
                     </div>
                 </div>
             </div>
@@ -247,8 +272,7 @@
                 <div class="info-row">
                     <label>Nhân viên</label>
                     <select>
-                        <option>Lưu Văn Linh</option>
-                        <option>Nguyễn Văn A</option>
+                        <option>{{userNameLogin}}</option>
                     </select>
                 </div>
                 <div class="info-row">

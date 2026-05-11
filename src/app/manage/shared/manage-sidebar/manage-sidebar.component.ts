@@ -12,6 +12,9 @@ import { RouterModule } from '@angular/router';
 })
 export class ManageSidebarComponent {
   isCollapsed = false;
+  openProducts = false;
+  openCustomers = false;
+  constructor(){}
   toggle() {
     this.isCollapsed = !this.isCollapsed;
   }

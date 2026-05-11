@@ -145,3 +145,36 @@ body {
     padding: 8px 50px;
     border-radius: 6px;
 }
+/* Bỏ border bao ngoài của table */
+.ant-table {
+    border: none !important;
+}
+
+/* Header: chỉ có border-bottom */
+.ant-table-thead > tr > th {
+    border-right: none !important;
+    border-left: none !important;
+    border-top: 1px solid #f0f0f0 !important;
+    border-bottom: 1px solid #f0f0f0 !important;
+    background-color: #fafafa;
+}
+
+/* Body rows: chỉ có border-bottom */
+.ant-table-tbody > tr > td {
+    border-right: none !important;
+    border-left: none !important;
+    border-top: none !important;
+    border-bottom: 1px solid #f0f0f0 !important;
+}
+
+/* Bỏ border của container bọc ngoài */
+.ant-table-container {
+    border: none !important;
+    border-left: none !important;
+}
+
+/* Bỏ border của thead container */
+.ant-table-container table > thead > tr:first-child th:first-child,
+.ant-table-container table > thead > tr:first-child th:last-child {
+    border-radius: 0 !important;
+}

@@ -13,8 +13,9 @@
     padding: 10px;
 }
 
-.user-isLogin{
-    width: 1000% !important;
+.user-isLogin {
+    /* width: 1000% !important; */
+    width: 300px !important;
 }
 
 .user-wrapper:hover .user-menu {
@@ -31,11 +32,19 @@
     font-size: 12px;
     color: #555;
     cursor: pointer;
+    max-width: 50px;
 }
 
 .action-item i {
     font-size: 20px;
     margin-bottom: 3px;
+}
+
+.action-item span {
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .user-menu-item {
@@ -134,6 +143,7 @@
     border-radius: 8px;
     text-decoration: none;
 }
+
 .btn-login:hover {
     background: #d10000;
     font-weight: 600;
@@ -150,6 +160,7 @@
     border-radius: 8px;
     text-decoration: none;
 }
+
 .btn-register:hover {
     font-weight: 600;
 }

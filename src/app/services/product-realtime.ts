@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ApiServicesService } from './api-services.service';
-import { ProductAdminFilterRespone, ProductAdminFilterRequest, ProductRespone, UserRespone, ProductUserFilterRequest, ProductUserFilterRespone } from '../interface/interfaceResponeAPI';
+import {UserRespone, ProductUserFilterRequest, ProductUserFilterRespone } from '../interface/interfaceResponeAPI';
 
 @Injectable({
   providedIn: 'root'
